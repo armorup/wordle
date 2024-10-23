@@ -22,7 +22,7 @@ public class MainGame extends Game {
         // Generate a font from TTF
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Play-Regular.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24; // font size
+        parameter.size = 36; // font size
         font = generator.generateFont(parameter); // Generate BitmapFont from TTF
         generator.dispose();
 
