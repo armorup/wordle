@@ -23,6 +23,7 @@ public class GameScreen implements Screen {
         this.game = game;
         this.wordle = new Wordle();
         this.inputHandler = new InputHandler(wordle);
+
     }
 
     @Override
@@ -34,16 +35,9 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
-        game.batch.begin();
-
         // Render the wordle grid
         wordle.render(delta, game.batch, game.font);
 
-        // Show current guess (uncolored for now)
-        game.font.setColor(Color.WHITE); // Reset to default color for current guess
-        game.font.draw(game.batch, "Your Guess: " + wordle.getCurrentGuess(), 100, 50);
-
-        game.batch.end();
     }
 
     @Override

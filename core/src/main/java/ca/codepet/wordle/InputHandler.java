@@ -11,30 +11,22 @@ public class InputHandler extends InputAdapter {
 
   @Override
   public boolean keyTyped(char character) {
-    return handleKeyPress(character);
-  }
-
-  // Handles key presses and updates the guess
-  private boolean handleKeyPress(char character) {
     if (wordle.isGameOver())
       return false;
 
+    System.out.println(character);
     // Handle backspace
-    String currentGuess = wordle.getCurrentGuess();
+    if (character == '\b') {
+      wordle.backspace();
 
-    if (character == '\b' && currentGuess.length() > 0) {
-      currentGuess = currentGuess.substring(0, currentGuess.length() - 1);
-      wordle.setCurrentGuess(currentGuess);
     } else if (character == '\r' || character == '\n') {
-      // Handle enter key (submit guess)
-      if (currentGuess.length() == 5) {
-        wordle.submitGuess();
-      }
-    } else if (Character.isLetter(character) && currentGuess.length() < 5) {
-      currentGuess += Character.toUpperCase(character);
-      wordle.setCurrentGuess(currentGuess);
+      wordle.submitGuess();
+
+    } else if (Character.isLetter(character)) {
+      wordle.addLetter(character);
     }
     return true;
+
   }
 
 }
