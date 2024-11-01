@@ -20,9 +20,14 @@ public class InputHandler extends InputAdapter {
       wordle.backspace();
 
     } else if (character == '\r' || character == '\n') {
-      wordle.submitGuess();
+      // Enter key pressed
+      System.out.println("Enter pressed");
+      if (wordle.submitGuess()) {
+        System.out.println("Submitted");
+      }
 
     } else if (Character.isLetter(character)) {
+      // Letter typed
       wordle.addLetter(character);
     }
     return true;

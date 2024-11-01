@@ -12,14 +12,11 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public class Wordle {
-  // enum FeedbackStatus {
-  // CORRECT, WRONG_POSITION, INCORRECT
-  // }
 
   private static final int ROWS = 6;
   private static final int COLS = 5;
 
-  public Grid grid;
+  Grid grid;
 
   // public Cell[][] grid = new Cell[ROWS][COLS];
   // public Color[][] gridColors = new Color[ROWS][COLS]; // To hold colors for
@@ -27,7 +24,7 @@ public class Wordle {
 
   private final String targetWord; // The target word for this game
   private final List<Feedback> pastGuesses; // List of past guesses and their feedback
-  private String currentGuess = ""; // Current guess being typed by the player
+  // private String currentGuess = ""; // Current guess being typed by the player
 
   public Wordle() {
     this("APPLE");
@@ -41,31 +38,27 @@ public class Wordle {
 
   // Backspace the last letter of the current guess
   public void backspace() {
-    System.out.println(currentGuess);
-    if (currentGuess.length() > 0) {
-      currentGuess = currentGuess.substring(0, currentGuess.length() - 1);
+    if (grid.currentGuess().length() > 0) {
       grid.backspace();
     }
   }
 
   public void addLetter(char letter) {
-    if (currentGuess.length() < COLS) {
-      currentGuess += letter;
-      grid.addLetter(letter);
+    if (grid.currentGuess().length() >= COLS) {
+      return;
     }
+
+    grid.addLetter(letter);
+    System.out.println("Current guess: " + grid.currentGuess());
+
   }
 
   public void render(float delta, SpriteBatch batch, BitmapFont font) {
     grid.render(delta, batch, font);
   }
 
-  // Getters and setters
-  public void setCurrentGuess(String currentGuess) {
-    this.currentGuess = currentGuess.toUpperCase();
-  }
-
   public String getCurrentGuess() {
-    return currentGuess;
+    return grid.currentGuess();
   }
 
   public boolean isGameOver() {
@@ -79,17 +72,19 @@ public class Wordle {
 
   // Handle a new guess and return feedback
   public boolean submitGuess() {
-    if (grid.cursor.col != COLS) {
+    if (!grid.cursor.pastRight()) {
       return false;
     }
 
+    // TODO: Check if already guessed
+    System.out.println("Submitting guess: " + grid.currentGuess());
+
     // Perform the logic for checking the guess against the target
-    Feedback feedback = checkGuess(currentGuess);
+    Feedback feedback = checkGuess(grid.currentGuess(), targetWord);
     pastGuesses.add(feedback);
 
     // Clear the current guess for the next round
     grid.cursor.nextRow();
-    currentGuess = "";
     return true;
   }
 
@@ -122,8 +117,8 @@ public class Wordle {
     }
   }
 
-  private Feedback checkGuess(String guess) {
-    Color[] feedbackColors = new Color[COLS];
+  private Feedback checkGuess(String guess, String targetWord) {
+    Color[] feedbackColors = new Color[targetWord.length()];
     boolean[] checkedTarget = new boolean[targetWord.length()];
     boolean[] checkedGuess = new boolean[guess.length()];
 
@@ -132,6 +127,10 @@ public class Wordle {
       char guessChar = guess.charAt(i);
       char targetChar = targetWord.charAt(i);
       if (guessChar == targetChar) {
+        Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
+        cell.status = Grid.CellStatus.CORRECT;
+        cell.color = GameScreen.CORRECT_COLOR;
+        grid.setCell(grid.cursor.getRow(), i, cell);
         feedbackColors[i] = GameScreen.CORRECT_COLOR;
         checkedTarget[i] = true;
         checkedGuess[i] = true;
@@ -144,6 +143,10 @@ public class Wordle {
         char guessChar = guess.charAt(i);
         for (int j = 0; j < targetWord.length(); j++) {
           if (!checkedTarget[j] && guessChar == targetWord.charAt(j)) {
+            Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
+            cell.status = Grid.CellStatus.WRONG_POSITION;
+            cell.color = GameScreen.WRONG_POSITION_COLOR;
+            grid.setCell(grid.cursor.getRow(), i, cell);
             feedbackColors[i] = GameScreen.WRONG_POSITION_COLOR;
             checkedTarget[j] = true;
             break;
@@ -157,6 +160,19 @@ public class Wordle {
       if (feedbackColors[i] == null) {
         feedbackColors[i] = GameScreen.INCORRECT_COLOR;
       }
+    }
+
+    // Update the grid's cells with feedback colors
+    for (int i = 0; i < COLS; i++) {
+      Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
+      cell.color = feedbackColors[i];
+      grid.setCell(grid.cursor.getRow(), i, cell);
+    }
+
+    // Output all grid cells
+    for (int i = 0; i < COLS; i++) {
+      Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
+      System.out.println("Cell " + i + ": " + cell.letter + " " + cell.color);
     }
 
     // Return the guess and feedback (correct or not)
@@ -175,10 +191,11 @@ class Grid {
   private final int rows;
   private final int cols;
   private final Cell[][] cells;
-  public final Cursor cursor = new Cursor();
+  final Cursor cursor = new Cursor();
 
   private final ShapeRenderer shape = new ShapeRenderer();
 
+  // Constructor for a new empty grid
   public Grid(int rows, int cols) {
     this.rows = rows;
     this.cols = cols;
@@ -190,24 +207,46 @@ class Grid {
     }
   }
 
+  // Return the current guess as a string
+  public String currentGuess() {
+    StringBuilder sb = new StringBuilder();
+    for (int col = 0; col < cols; col++) {
+      char letter = cells[cursor.row][col].letter;
+      if (letter == ' ')
+        break;
+      sb.append(letter);
+    }
+    return sb.toString();
+  }
+
+  enum CellStatus {
+    UNCHECKED, CORRECT, WRONG_POSITION, INCORRECT
+  }
+
   // Inner classes for Cell and Cursor
   public class Cell {
     public char letter;
     public Color color;
+    public CellStatus status;
 
     public Cell() {
-      this(' ', Color.WHITE);
+      this(' ', Color.WHITE, CellStatus.UNCHECKED);
     }
 
-    public Cell(char letter, Color color) {
+    public Cell(char letter) {
+      this(letter, Color.WHITE, CellStatus.UNCHECKED);
+    }
+
+    public Cell(char letter, Color color, CellStatus status) {
       this.letter = letter;
       this.color = color;
+      this.status = status;
     }
   }
 
   public class Cursor {
-    public int row;
-    public int col;
+    private int row;
+    private int col;
 
     public Cursor() {
       this(0, 0);
@@ -216,6 +255,14 @@ class Grid {
     public Cursor(int row, int col) {
       this.row = row;
       this.col = col;
+    }
+
+    public int getRow() {
+      return row;
+    }
+
+    public int getCol() {
+      return col;
     }
 
     public void nextRow() {
@@ -237,6 +284,10 @@ class Grid {
 
     public boolean atRight() {
       return col == cols - 1;
+    }
+
+    public boolean pastRight() {
+      return col >= cols;
     }
 
   }
@@ -276,8 +327,7 @@ class Grid {
     }
 
     char currentLetter = Character.toUpperCase(letter);
-    Cell newCell = new Cell(currentLetter, Color.WHITE);
-    setCell(cursor.row, cursor.col, newCell);
+    setCell(new Cell(currentLetter));
     cursor.nextCol();
     return true;
 
@@ -301,7 +351,6 @@ class Grid {
         // Draw the cell tile
         shape.setColor(Color.DARK_GRAY);
         shape.rect(x, y, cellSize, cellSize);
-
       }
     }
     shape.end();
@@ -314,7 +363,7 @@ class Grid {
         float x = startX + col * (cellSize + cellPadding);
         float y = startY - row * (cellSize + cellPadding);
 
-        // Get the cell to check if there's a letter
+        // Get the cell and check if there's a letter
         Grid.Cell cell = getCell(row, col);
         if (cell.letter != ' ') {
           // Set the font color based on cell's feedback color
