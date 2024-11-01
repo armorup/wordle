@@ -6,11 +6,14 @@ import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 
 public class InputHandler extends InputAdapter {
+  private final MainGame game;
   private final Wordle wordle;
   private Rectangle playAgainButtonBounds;
+  private Rectangle statsButtonBounds;
 
-  public InputHandler(Wordle wordle) {
+  public InputHandler(Wordle wordle, MainGame game) {
     this.wordle = wordle;
+    this.game = game;
   }
 
   @Override
@@ -39,16 +42,33 @@ public class InputHandler extends InputAdapter {
     playAgainButtonBounds = bounds;
   }
 
+  public void setStatsButtonBounds(Rectangle bounds) {
+    statsButtonBounds = bounds;
+  }
+
   @Override
   public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    if (playAgainButtonBounds != null && wordle.isGameOver()) {
-      Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-      if (playAgainButtonBounds.contains(touchPos.x, touchPos.y)) {
-        // Restart the game
-        wordle.restart();
-        return true;
+    if (wordle.isGameOver()) {
+      // Check if the play again button was pressed
+      if (playAgainButtonBounds != null) {
+        Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        if (playAgainButtonBounds.contains(touchPos.x, touchPos.y)) {
+          // Restart the game
+          wordle.restart();
+          return true;
+        }
+      }
+      // Check if the stats button was pressed
+      if (statsButtonBounds != null) {
+        Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+        if (statsButtonBounds.contains(touchPos.x, touchPos.y)) {
+          // Show the stats screen
+          game.setScreen(new StatsScreen(game, game.getScreen()));
+          return true;
+        }
       }
     }
+
     return false;
   }
 

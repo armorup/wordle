@@ -9,7 +9,6 @@ import com.badlogic.gdx.files.FileHandle;
 
 public class FileUtils {
   /*
-   * TODO: move into utility class
    * Load words from a file into a list.
    */
   public static void loadWordsFromFile(String fileName, List<String> wordList) {

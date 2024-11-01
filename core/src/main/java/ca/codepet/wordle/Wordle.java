@@ -29,6 +29,7 @@ public final class Wordle {
   private static final Set<String> taWords = new HashSet<>();
 
   private String message = "";
+  private String winMessage = "";
 
   /*
    * Load the word lists from files when the class is loaded.
@@ -52,57 +53,12 @@ public final class Wordle {
    */
   public void restart() {
     pastGuesses.clear();
-    message = "Begin Typing";
+    message = "Type a Word";
+    winMessage = "";
     grid = new Grid(ROWS, COLS);
     this.targetWord = chooseRandomWord();
     System.out.println("Target word: " + targetWord);
   }
-
-  // /*
-  // * TODO: move into utility class
-  // * Load words from a file into a list.
-  // */
-  // private static void loadWordsFromFile(String fileName, List<String> wordList)
-  // {
-  // FileHandle file = Gdx.files.internal(fileName);
-  // try (Scanner scanner = new Scanner(file.readString())) {
-  // while (scanner.hasNextLine()) {
-  // String word = scanner.nextLine().trim();
-  // if (word.length() == 5) {
-  // wordList.add(word.toUpperCase());
-  // }
-  // }
-  // } catch (Exception e) {
-  // throw new RuntimeException("Error reading words file: " + fileName, e);
-  // }
-
-  // if (wordList.isEmpty()) {
-  // throw new RuntimeException("No 5-letter words found in the file: " +
-  // fileName);
-  // }
-  // }
-
-  // /*
-  // * Load words from a file into a set.
-  // */
-  // private static void loadWordsFromFile(String fileName, Set<String> wordSet) {
-  // FileHandle file = Gdx.files.internal(fileName);
-  // try (Scanner scanner = new Scanner(file.readString())) {
-  // while (scanner.hasNextLine()) {
-  // String word = scanner.nextLine().trim();
-  // if (word.length() == 5) {
-  // wordSet.add(word.toUpperCase());
-  // }
-  // }
-  // } catch (Exception e) {
-  // throw new RuntimeException("Error reading words file: " + fileName, e);
-  // }
-
-  // if (wordSet.isEmpty()) {
-  // throw new RuntimeException("No 5-letter words found in the file: " +
-  // fileName);
-  // }
-  // }
 
   /*
    * Choose a random word from the list of words.
@@ -170,7 +126,11 @@ public final class Wordle {
     // Check if the player has guessed the correct word
     boolean won = !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
     if (won) {
-      message = "You Got It!";
+      int attempts = pastGuesses.size();
+      if (winMessage.isBlank()) {
+        winMessage = WinMessages.getMessage(attempts);
+      }
+      message = winMessage;
     }
     return won;
   }

@@ -26,7 +26,7 @@ public class GameScreen implements Screen {
     public GameScreen(MainGame game) {
         this.game = game;
         this.wordle = new Wordle();
-        this.inputHandler = new InputHandler(wordle);
+        this.inputHandler = new InputHandler(wordle, game);
         this.shapeRenderer = new ShapeRenderer();
     }
 
@@ -47,20 +47,25 @@ public class GameScreen implements Screen {
         float y = Gdx.graphics.getHeight() * 0.32f;
         renderMessage(wordle.getMessage(), y);
 
-        // Render the play again button
+        // Render game over and stats buttons
         if (wordle.isGameOver()) {
+            // Render the play again button
             playAgainButton(y);
+            // Render the stats button
+            statsButton(y);
+            // Render instructions button
+            helpButton(y);
+
         }
+
     }
 
-    private float renderMessage(String message, float y) {
+    private void renderMessage(String message, float y) {
         GlyphLayout layout = new GlyphLayout(game.font, message);
         float xMessage = (Gdx.graphics.getWidth() - layout.width) / 2;
-        float yMessage = Gdx.graphics.getHeight() * 0.32f;
         game.font.setColor(Color.WHITE);
-        game.font.draw(game.batch, layout, xMessage, yMessage);
+        game.font.draw(game.batch, layout, xMessage, y);
         game.batch.end();
-        return yMessage;
     }
 
     private void playAgainButton(float y) {
@@ -85,6 +90,54 @@ public class GameScreen implements Screen {
         game.batch.begin();
         game.font.setColor(Color.WHITE);
         game.font.draw(game.batch, playAgainLayout, xPlayAgain, yPlayAgain);
+        game.batch.end();
+    }
+
+    private void statsButton(float y) {
+        String statsText = "Your Stats";
+        GlyphLayout statsLayout = new GlyphLayout(game.font, statsText);
+        float xStats = (Gdx.graphics.getWidth() - statsLayout.width) / 2;
+        float yStats = y - 100;
+        float padding = 10;
+        float rectWidth = statsLayout.width + padding * 2;
+        float rectHeight = statsLayout.height + padding * 2;
+        Rectangle statsButtonBounds = new Rectangle(xStats - padding, yStats - statsLayout.height - padding, rectWidth,
+                rectHeight);
+        inputHandler.setStatsButtonBounds(statsButtonBounds);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(xStats - padding, yStats - statsLayout.height - padding, rectWidth, rectHeight);
+        shapeRenderer.end();
+
+        // Render the stats button text
+        game.batch.begin();
+        game.font.setColor(Color.WHITE);
+        game.font.draw(game.batch, statsLayout, xStats, yStats);
+        game.batch.end();
+    }
+
+    private void helpButton(float y) {
+        String statsText = "Your Stats";
+        GlyphLayout statsLayout = new GlyphLayout(game.font, statsText);
+        float xStats = (Gdx.graphics.getWidth() - statsLayout.width) / 2;
+        float yStats = y - 100;
+        float padding = 10;
+        float rectWidth = statsLayout.width + padding * 2;
+        float rectHeight = statsLayout.height + padding * 2;
+        Rectangle statsButtonBounds = new Rectangle(xStats - padding, yStats - statsLayout.height - padding, rectWidth,
+                rectHeight);
+        inputHandler.setStatsButtonBounds(statsButtonBounds);
+
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(xStats - padding, yStats - statsLayout.height - padding, rectWidth, rectHeight);
+        shapeRenderer.end();
+
+        // Render the stats button text
+        game.batch.begin();
+        game.font.setColor(Color.WHITE);
+        game.font.draw(game.batch, statsLayout, xStats, yStats);
         game.batch.end();
     }
 
