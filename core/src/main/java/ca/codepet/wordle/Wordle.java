@@ -23,10 +23,6 @@ public final class Wordle {
 
   Grid grid;
 
-  // public Cell[][] grid = new Cell[ROWS][COLS];
-  // public Color[][] gridColors = new Color[ROWS][COLS]; // To hold colors for
-  // each letter
-
   private final String targetWord; // The target word for this game
   private final List<Feedback> pastGuesses = new ArrayList<>(); // List of past guesses and their feedback
   private static final List<String> laWords = new ArrayList<>();
@@ -34,6 +30,9 @@ public final class Wordle {
 
   private String message = "Guess the word!"; // Message from wordle
 
+  /*
+   * Load the word lists from files when the class is loaded.
+   */
   static {
     loadWordsFromFile("wordle-la.txt", laWords);
     loadWordsFromFile("wordle-ta.txt", taWords);
@@ -57,6 +56,9 @@ public final class Wordle {
     grid = new Grid(ROWS, COLS);
   }
 
+  /*
+   * Load words from a file into a list.
+   */
   private static void loadWordsFromFile(String fileName, List<String> wordList) {
     FileHandle file = Gdx.files.internal(fileName);
     try (Scanner scanner = new Scanner(file.readString())) {
@@ -75,6 +77,9 @@ public final class Wordle {
     }
   }
 
+  /*
+   * Load words from a file into a set.
+   */
   private static void loadWordsFromFile(String fileName, Set<String> wordSet) {
     FileHandle file = Gdx.files.internal(fileName);
     try (Scanner scanner = new Scanner(file.readString())) {
@@ -93,18 +98,26 @@ public final class Wordle {
     }
   }
 
+  /*
+   * Choose a random word from the list of words.
+   */
   private static String chooseRandomWord() {
     Random random = new Random();
     return laWords.get(random.nextInt(laWords.size()));
   }
 
+  /*
+   * Check if a word is a valid word in the game.
+   */
   private boolean isValidWord(String word) {
     boolean taValid = taWords.contains(word.toUpperCase());
     boolean laValid = laWords.contains(word.toUpperCase());
     return taValid || laValid;
   }
 
-  // Backspace the last letter of the current guess
+  /*
+   * Handle backspace key press.
+   */
   public void backspace() {
     clearMessage();
     if (grid.currentGuess().length() > 0) {
@@ -112,46 +125,64 @@ public final class Wordle {
     }
   }
 
+  /*
+   * Add a letter to the current guess.
+   */
   public void addLetter(char letter) {
     clearMessage();
     if (grid.currentGuess().length() >= COLS) {
       return;
     }
-
     grid.addLetter(letter);
-
   }
 
+  /*
+   * Render the Wordle game grid.
+   */
   public void render(float delta, SpriteBatch batch, BitmapFont font) {
     grid.render(delta, batch, font);
   }
 
+  /*
+   * Get the current guess as a string.
+   */
   public String getCurrentGuess() {
     return grid.currentGuess();
   }
 
+  /*
+   * Check if the game is over.
+   */
   public boolean isGameOver() {
     return pastGuesses.size() >= ROWS || hasWon();
   }
 
+  /*
+   * Check if the player has won the game.
+   */
   public boolean hasWon() {
     // Check if the player has guessed the correct word
-    boolean won = pastGuesses.size() > 0 && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+    boolean won = !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
     if (won) {
       message = "You won!";
     }
     return won;
   }
 
+  /*
+   * Get the feedback message to display to the player.
+   */
   public String getMessage() {
     return message;
   }
 
-  public void clearMessage() {
+  private void clearMessage() {
     message = "";
   }
 
-  // Handle a new guess and return feedback
+  /*
+   * Submit the current guess and check it against the target word.
+   */
   public boolean submitGuess() {
     clearMessage();
     if (!grid.cursor.pastRight()) {
@@ -183,11 +214,16 @@ public final class Wordle {
     return true;
   }
 
+  /*
+   * Get list of past guesses.
+   */
   public List<Feedback> getPastGuesses() {
     return pastGuesses;
   }
 
-  // Inner class to encapsulate guess feedback
+  /*
+   * Inner class to represent a feedback for a guess.
+   */
   public class Feedback {
     public final String guess;
     public final Color[] colors;
@@ -212,6 +248,9 @@ public final class Wordle {
     }
   }
 
+  /*
+   * Check a guess against the target word and return feedback.
+   */
   private Feedback checkGuess(String guess, String targetWord) {
     Color[] feedbackColors = new Color[targetWord.length()];
     boolean[] checkedTarget = new boolean[targetWord.length()];
@@ -264,11 +303,6 @@ public final class Wordle {
       grid.setCell(grid.cursor.getRow(), i, cell);
     }
 
-    // Output all grid cells
-    for (int i = 0; i < COLS; i++) {
-      Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
-    }
-
     // Return the guess and feedback (correct or not)
     return new Feedback(guess, feedbackColors, guess.equals(targetWord));
   }
@@ -317,7 +351,9 @@ class Grid {
     UNCHECKED, CORRECT, WRONG_POSITION, INCORRECT
   }
 
-  // Inner classes for Cell and Cursor
+  /*
+   * Inner class to represent a cell in the grid.
+   */
   public class Cell {
     public char letter;
     public Color color;
