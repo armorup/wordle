@@ -76,7 +76,12 @@ public class Wordle {
       return false;
     }
 
-    // TODO: Check if already guessed
+    // Check if already guessed
+    for (Feedback pastFeedback : pastGuesses) {
+      if (pastFeedback.getGuess().equals(grid.currentGuess())) {
+        return false;
+      }
+    }
     System.out.println("Submitting guess: " + grid.currentGuess());
 
     // Perform the logic for checking the guess against the target
