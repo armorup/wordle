@@ -4,6 +4,8 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 /**
  * The main game screen where the Wordle game is played.
@@ -18,11 +20,13 @@ public class GameScreen implements Screen {
     private final MainGame game; // Reference to the main game object
     private final Wordle wordle; // The Wordle game object
     private final InputHandler inputHandler; // Input handler for the game
+    private final ShapeRenderer shapeRenderer; // ShapeRenderer for drawing shapes
 
     public GameScreen(MainGame game) {
         this.game = game;
         this.wordle = new Wordle();
         this.inputHandler = new InputHandler(wordle);
+        this.shapeRenderer = new ShapeRenderer();
     }
 
     @Override
@@ -37,6 +41,41 @@ public class GameScreen implements Screen {
         // Render the wordle
         wordle.render(delta, game.batch, game.font);
 
+        game.batch.begin();
+        // Render a game message
+        String message = wordle.getMessage();
+        GlyphLayout layout = new GlyphLayout(game.font, message);
+        float xMessage = (Gdx.graphics.getWidth() - layout.width) / 2;
+        float yMessage = Gdx.graphics.getHeight() * 0.32f;
+        game.font.setColor(Color.WHITE);
+        game.font.draw(game.batch, layout, xMessage, yMessage);
+        game.batch.end();
+
+        // Render the play again button background
+        if (wordle.isGameOver()) {
+            playAgainButton(yMessage);
+        }
+    }
+
+    private void playAgainButton(float yMessage) {
+        String playAgainText = "Play Again";
+        GlyphLayout playAgainLayout = new GlyphLayout(game.font, playAgainText);
+        float padding = 10;
+        float rectWidth = playAgainLayout.width + padding * 2;
+        float rectHeight = playAgainLayout.height + padding * 2;
+        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
+        float xPlayAgain = (Gdx.graphics.getWidth() - playAgainLayout.width) / 2;
+        float yPlayAgain = yMessage - 50;
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(xPlayAgain - padding, yPlayAgain - playAgainLayout.height - padding, rectWidth,
+                rectHeight);
+        shapeRenderer.end();
+
+        // Render the play again button text
+        game.batch.begin();
+        game.font.setColor(Color.WHITE);
+        game.font.draw(game.batch, playAgainLayout, xPlayAgain, yPlayAgain);
+        game.batch.end();
     }
 
     @Override

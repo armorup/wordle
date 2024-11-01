@@ -14,7 +14,6 @@ public class InputHandler extends InputAdapter {
     if (wordle.isGameOver())
       return false;
 
-    System.out.println(character);
     // Handle backspace
     if (character == '\b') {
       wordle.backspace();
@@ -22,9 +21,7 @@ public class InputHandler extends InputAdapter {
     } else if (character == '\r' || character == '\n') {
       // Enter key pressed
       System.out.println("Enter pressed");
-      if (wordle.submitGuess()) {
-        System.out.println("Submitted");
-      }
+      wordle.submitGuess();
 
     } else if (Character.isLetter(character)) {
       // Letter typed

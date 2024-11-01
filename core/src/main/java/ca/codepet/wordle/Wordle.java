@@ -16,7 +16,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
-public class Wordle {
+public final class Wordle {
 
   private static final int ROWS = 6;
   private static final int COLS = 5;
@@ -31,6 +31,8 @@ public class Wordle {
   private final List<Feedback> pastGuesses = new ArrayList<>(); // List of past guesses and their feedback
   private static final List<String> laWords = new ArrayList<>();
   private static final Set<String> taWords = new HashSet<>();
+
+  private String message = "Guess the word!"; // Message from wordle
 
   static {
     loadWordsFromFile("wordle-la.txt", laWords);
@@ -104,12 +106,14 @@ public class Wordle {
 
   // Backspace the last letter of the current guess
   public void backspace() {
+    clearMessage();
     if (grid.currentGuess().length() > 0) {
       grid.backspace();
     }
   }
 
   public void addLetter(char letter) {
+    clearMessage();
     if (grid.currentGuess().length() >= COLS) {
       return;
     }
@@ -127,21 +131,30 @@ public class Wordle {
     return grid.currentGuess();
   }
 
-  public boolean isWin() {
-    return !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
-  }
-
   public boolean isGameOver() {
     return pastGuesses.size() >= ROWS || hasWon();
   }
 
   public boolean hasWon() {
     // Check if the player has guessed the correct word
-    return !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+    boolean won = pastGuesses.size() > 0 && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+    if (won) {
+      message = "You won!";
+    }
+    return won;
+  }
+
+  public String getMessage() {
+    return message;
+  }
+
+  public void clearMessage() {
+    message = "";
   }
 
   // Handle a new guess and return feedback
   public boolean submitGuess() {
+    clearMessage();
     if (!grid.cursor.pastRight()) {
       return false;
     }
@@ -149,12 +162,14 @@ public class Wordle {
     // Check if already guessed
     for (Feedback pastFeedback : pastGuesses) {
       if (pastFeedback.getGuess().equals(grid.currentGuess())) {
+        message = "Already guessed";
         return false;
       }
     }
 
     // Check if the guess is a valid word
     if (!isValidWord(grid.currentGuess())) {
+      message = "Invalid Word";
       return false;
     }
 
@@ -262,7 +277,7 @@ public class Wordle {
 }
 
 /**
- * Represents the game grid for Wordle.
+ * The game grid for Wordle.
  */
 class Grid {
 
@@ -420,8 +435,8 @@ class Grid {
     float gridWidth = cols * cellSize + (cols - 1) * cellPadding;
     float gridHeight = rows * cellSize + (rows - 1) * cellPadding;
 
-    float startX = Gdx.graphics.getWidth() / 2 - gridWidth / 2;
-    float startY = Gdx.graphics.getHeight() / 2 + gridHeight / 2;
+    float startX = Gdx.graphics.getWidth() * 0.5f - gridWidth * 0.5f;
+    float startY = Gdx.graphics.getHeight() * 0.5f + gridHeight * 0.6f;
 
     // Render the grid tile
     shape.begin(ShapeRenderer.ShapeType.Filled);
@@ -438,6 +453,7 @@ class Grid {
 
     // Render the letters
     batch.begin();
+
     // Draw the letter in the box
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
