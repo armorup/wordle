@@ -38,26 +38,31 @@ public class GameScreen implements Screen {
     public void render(float delta) {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
-        // Render the wordle
+        // Render the wordle grid
         wordle.render(delta, game.batch, game.font);
 
         game.batch.begin();
         // Render a game message
-        String message = wordle.getMessage();
+        float y = Gdx.graphics.getHeight() * 0.32f;
+        renderMessage(wordle.getMessage(), y);
+
+        // Render the play again button
+        if (wordle.isGameOver()) {
+            playAgainButton(y);
+        }
+    }
+
+    private float renderMessage(String message, float y) {
         GlyphLayout layout = new GlyphLayout(game.font, message);
         float xMessage = (Gdx.graphics.getWidth() - layout.width) / 2;
         float yMessage = Gdx.graphics.getHeight() * 0.32f;
         game.font.setColor(Color.WHITE);
         game.font.draw(game.batch, layout, xMessage, yMessage);
         game.batch.end();
-
-        // Render the play again button background
-        if (wordle.isGameOver()) {
-            playAgainButton(yMessage);
-        }
+        return yMessage;
     }
 
-    private void playAgainButton(float yMessage) {
+    private void playAgainButton(float y) {
         String playAgainText = "Play Again";
         GlyphLayout playAgainLayout = new GlyphLayout(game.font, playAgainText);
         float padding = 10;
@@ -65,7 +70,7 @@ public class GameScreen implements Screen {
         float rectHeight = playAgainLayout.height + padding * 2;
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
         float xPlayAgain = (Gdx.graphics.getWidth() - playAgainLayout.width) / 2;
-        float yPlayAgain = yMessage - 50;
+        float yPlayAgain = y - 50;
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(xPlayAgain - padding, yPlayAgain - playAgainLayout.height - padding, rectWidth,
                 rectHeight);

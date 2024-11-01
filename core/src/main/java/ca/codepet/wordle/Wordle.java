@@ -119,7 +119,6 @@ public final class Wordle {
     }
 
     grid.addLetter(letter);
-    System.out.println("Current guess: " + grid.currentGuess());
 
   }
 
@@ -268,7 +267,6 @@ public final class Wordle {
     // Output all grid cells
     for (int i = 0; i < COLS; i++) {
       Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
-      System.out.println("Cell " + i + ": " + cell.letter + " " + cell.color);
     }
 
     // Return the guess and feedback (correct or not)
