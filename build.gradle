@@ -32,6 +32,11 @@ configure(subprojects) {
   apply plugin: 'kotlin'
   sourceCompatibility = 11
 
+  dependencies {
+    implementation 'org.tinylog:tinylog-api:2.4.1'
+    implementation 'org.tinylog:tinylog-impl:2.4.1'
+  }
+
   // From https://lyze.dev/2021/04/29/libGDX-Internal-Assets-List/
   // The article can be helpful when using assets.txt in your project.
   tasks.register('generateAssetList') {

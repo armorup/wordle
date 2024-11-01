@@ -1,9 +1,14 @@
 package ca.codepet.wordle;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Random;
+import java.util.Scanner;
+import java.util.Set;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -23,17 +28,78 @@ public class Wordle {
   // each letter
 
   private final String targetWord; // The target word for this game
-  private final List<Feedback> pastGuesses; // List of past guesses and their feedback
-  // private String currentGuess = ""; // Current guess being typed by the player
+  private final List<Feedback> pastGuesses = new ArrayList<>(); // List of past guesses and their feedback
+  private static final List<String> laWords = new ArrayList<>();
+  private static final Set<String> taWords = new HashSet<>();
 
-  public Wordle() {
-    this("APPLE");
+  static {
+    loadWordsFromFile("wordle-la.txt", laWords);
+    loadWordsFromFile("wordle-ta.txt", taWords);
+    System.out.println(laWords.size() + " words loaded");
+    System.out.println(taWords.size() + " words loaded");
   }
 
+  /*
+   * Constructor for a new Wordle game with a random target word.
+   */
+  public Wordle() {
+    this(chooseRandomWord());
+    System.out.println("Target word: " + targetWord);
+  }
+
+  /*
+   * Constructor for a new Wordle game with a specified target word.
+   */
   public Wordle(String targetWord) {
     this.targetWord = targetWord.toUpperCase(); // Ensure the target word is uppercase
-    this.pastGuesses = new ArrayList<>();
     grid = new Grid(ROWS, COLS);
+  }
+
+  private static void loadWordsFromFile(String fileName, List<String> wordList) {
+    FileHandle file = Gdx.files.internal(fileName);
+    try (Scanner scanner = new Scanner(file.readString())) {
+      while (scanner.hasNextLine()) {
+        String word = scanner.nextLine().trim();
+        if (word.length() == 5) {
+          wordList.add(word.toUpperCase());
+        }
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Error reading words file: " + fileName, e);
+    }
+
+    if (wordList.isEmpty()) {
+      throw new RuntimeException("No 5-letter words found in the file: " + fileName);
+    }
+  }
+
+  private static void loadWordsFromFile(String fileName, Set<String> wordSet) {
+    FileHandle file = Gdx.files.internal(fileName);
+    try (Scanner scanner = new Scanner(file.readString())) {
+      while (scanner.hasNextLine()) {
+        String word = scanner.nextLine().trim();
+        if (word.length() == 5) {
+          wordSet.add(word.toUpperCase());
+        }
+      }
+    } catch (Exception e) {
+      throw new RuntimeException("Error reading words file: " + fileName, e);
+    }
+
+    if (wordSet.isEmpty()) {
+      throw new RuntimeException("No 5-letter words found in the file: " + fileName);
+    }
+  }
+
+  private static String chooseRandomWord() {
+    Random random = new Random();
+    return laWords.get(random.nextInt(laWords.size()));
+  }
+
+  private boolean isValidWord(String word) {
+    boolean taValid = taWords.contains(word.toUpperCase());
+    boolean laValid = laWords.contains(word.toUpperCase());
+    return taValid || laValid;
   }
 
   // Backspace the last letter of the current guess
@@ -61,6 +127,10 @@ public class Wordle {
     return grid.currentGuess();
   }
 
+  public boolean isWin() {
+    return !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+  }
+
   public boolean isGameOver() {
     return pastGuesses.size() >= ROWS || hasWon();
   }
@@ -82,6 +152,12 @@ public class Wordle {
         return false;
       }
     }
+
+    // Check if the guess is a valid word
+    if (!isValidWord(grid.currentGuess())) {
+      return false;
+    }
+
     System.out.println("Submitting guess: " + grid.currentGuess());
 
     // Perform the logic for checking the guess against the target
