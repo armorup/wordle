@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Rectangle;
 
 /**
  * The main game screen where the Wordle game is played.
@@ -65,12 +66,16 @@ public class GameScreen implements Screen {
     private void playAgainButton(float y) {
         String playAgainText = "Play Again";
         GlyphLayout playAgainLayout = new GlyphLayout(game.font, playAgainText);
+        float xPlayAgain = (Gdx.graphics.getWidth() - playAgainLayout.width) / 2;
+        float yPlayAgain = y - 50;
         float padding = 10;
         float rectWidth = playAgainLayout.width + padding * 2;
         float rectHeight = playAgainLayout.height + padding * 2;
+        Rectangle playAgainButtonBounds = new Rectangle(xPlayAgain - padding,
+                yPlayAgain - playAgainLayout.height - padding, rectWidth, rectHeight);
+        inputHandler.setPlayAgainButtonBounds(playAgainButtonBounds);
+
         shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        float xPlayAgain = (Gdx.graphics.getWidth() - playAgainLayout.width) / 2;
-        float yPlayAgain = y - 50;
         shapeRenderer.setColor(Color.DARK_GRAY);
         shapeRenderer.rect(xPlayAgain - padding, yPlayAgain - playAgainLayout.height - padding, rectWidth,
                 rectHeight);
