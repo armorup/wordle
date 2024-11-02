@@ -67,7 +67,7 @@ public class Button {
     if (isCircular) {
       font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2);
     } else {
-      font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2);
+      font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2 - padding);
     }
     batch.end();
   }

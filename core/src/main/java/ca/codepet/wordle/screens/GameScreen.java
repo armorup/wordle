@@ -57,10 +57,9 @@ public class GameScreen implements Screen {
         wordle.render(delta, game.batch, game.font);
 
         // Render a game message
-        game.batch.begin();
+
         float y = Gdx.graphics.getHeight() * 0.32f;
         renderMessage(wordle.getMessage(), y);
-        game.batch.end();
 
         // Render help button
         helpButton.render(shapeRenderer, game.batch);
@@ -82,10 +81,12 @@ public class GameScreen implements Screen {
     }
 
     private void renderMessage(String message, float y) {
+        game.batch.begin();
         GlyphLayout layout = new GlyphLayout(game.font, message);
         float xMessage = (Gdx.graphics.getWidth() - layout.width) / 2;
         game.font.setColor(Color.WHITE);
         game.font.draw(game.batch, layout, xMessage, y);
+        game.batch.end();
     }
 
     @Override

@@ -9,7 +9,7 @@ public class WinMessages {
     {
       put(1, List.of(
           "Genius!",
-          "Icredible!"));
+          "Incredible!"));
 
       put(2, List.of(
           "Impressive!",
