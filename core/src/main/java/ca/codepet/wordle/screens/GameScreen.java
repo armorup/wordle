@@ -1,4 +1,4 @@
-package ca.codepet.wordle;
+package ca.codepet.wordle.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
@@ -8,15 +8,19 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
+import ca.codepet.wordle.MainGame;
+import ca.codepet.wordle.Wordle;
+import ca.codepet.wordle.helpers.InputHandler;
+
 /**
  * The main game screen where the Wordle game is played.
  */
 public class GameScreen implements Screen {
 
     // Color definitions
-    static final Color CORRECT_COLOR = Color.GREEN; // Correct letter and position
-    static final Color WRONG_POSITION_COLOR = Color.YELLOW; // Correct letter, wrong position
-    static final Color INCORRECT_COLOR = Color.GRAY; // Incorrect letter
+    public static final Color CORRECT_COLOR = Color.GREEN; // Correct letter and position
+    public static final Color WRONG_POSITION_COLOR = Color.YELLOW; // Correct letter, wrong position
+    public static final Color INCORRECT_COLOR = Color.GRAY; // Incorrect letter
 
     private final MainGame game; // Reference to the main game object
     private final Wordle wordle; // The Wordle game object

@@ -15,6 +15,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 import ca.codepet.util.FileUtils;
+import ca.codepet.wordle.helpers.WinMessages;
+import ca.codepet.wordle.screens.GameScreen;
 
 public final class Wordle {
 

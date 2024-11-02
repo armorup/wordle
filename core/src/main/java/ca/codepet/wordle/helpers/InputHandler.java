@@ -1,9 +1,14 @@
-package ca.codepet.wordle;
+package ca.codepet.wordle.helpers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
+
+import ca.codepet.wordle.MainGame;
+import ca.codepet.wordle.Wordle;
+import ca.codepet.wordle.screens.InstructionScreen;
+import ca.codepet.wordle.screens.StatsScreen;
 
 public class InputHandler extends InputAdapter {
   private final MainGame game;
@@ -40,16 +45,25 @@ public class InputHandler extends InputAdapter {
   }
 
   public void setPlayAgainButtonBounds(Rectangle bounds) {
-    playAgainButtonBounds = bounds;
+    if (playAgainButtonBounds == null) {
+      System.out.println("Play again button bounds set");
+      playAgainButtonBounds = bounds;
+    }
+
   }
 
   public void setStatsButtonBounds(Rectangle bounds) {
-    statsButtonBounds = bounds;
+    if (statsButtonBounds == null) {
+      System.out.println("Stats button bounds set");
+      statsButtonBounds = bounds;
+    }
   }
 
   public void setHelpButtonBounds(Rectangle bounds) {
-    helpButtonBounds = bounds;
-    System.out.println("Help button bounds set");
+    if (helpButtonBounds == null) {
+      helpButtonBounds = bounds;
+      System.out.println("Help button bounds set");
+    }
   }
 
   @Override
@@ -60,7 +74,7 @@ public class InputHandler extends InputAdapter {
       if (helpButtonBounds.contains(touchPos.x, touchPos.y)) {
         // Show the help screen
         game.setScreen(new InstructionScreen(game, game.getScreen()));
-        return true;
+        return false;
       }
     }
 

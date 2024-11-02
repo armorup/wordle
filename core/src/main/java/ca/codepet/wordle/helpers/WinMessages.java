@@ -1,4 +1,4 @@
-package ca.codepet.wordle;
+package ca.codepet.wordle.helpers;
 
 import java.util.HashMap;
 import java.util.List;

@@ -1,4 +1,4 @@
-package ca.codepet.wordle;
+package ca.codepet.wordle.ui;
 
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;

@@ -1,9 +1,11 @@
-package ca.codepet.wordle;
+package ca.codepet.wordle.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+
+import ca.codepet.wordle.MainGame;
 
 public class StatsScreen extends InputAdapter implements Screen {
 

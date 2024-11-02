@@ -1,4 +1,4 @@
-package ca.codepet.wordle;
+package ca.codepet.wordle.helpers;
 
 /**
  * The statistics class for the Wordle game.
