@@ -38,10 +38,10 @@ public class GameScreen implements Screen {
 
         // Initialize buttons
         float y = Gdx.graphics.getHeight() * 0.32f;
-        playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font);
-        statsButton = new Button("Your Stats", Gdx.graphics.getWidth() / 2, y - 100, game.font);
+        playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, false);
+        statsButton = new Button("Your Stats", Gdx.graphics.getWidth() / 2, y - 100, game.font, false);
         helpButton = new Button("?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
-                game.faSolidFont);
+                game.faSolidFont, true);
     }
 
     @Override

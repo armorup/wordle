@@ -16,9 +16,11 @@ public class Button {
   private final Color backgroundColor;
   private final float padding;
   private Rectangle bounds;
+  private final boolean isCircular;
 
   // Constructor with all parameters
-  public Button(String text, float x, float y, BitmapFont font, Color textColor, Color backgroundColor, float padding) {
+  public Button(String text, float x, float y, BitmapFont font, Color textColor, Color backgroundColor, float padding,
+      boolean isCircular) {
     this.text = text;
     this.x = x;
     this.y = y;
@@ -26,33 +28,47 @@ public class Button {
     this.textColor = textColor;
     this.backgroundColor = backgroundColor;
     this.padding = padding;
+    this.isCircular = isCircular;
     calculateBounds();
   }
 
   // Overloaded constructor with default values
-  public Button(String text, float x, float y, BitmapFont font) {
-    this(text, x, y, font, Color.WHITE, Color.DARK_GRAY, 10);
+  public Button(String text, float x, float y, BitmapFont font, boolean isCircular) {
+    this(text, x, y, font, Color.WHITE, Color.DARK_GRAY, 10, isCircular);
   }
 
   private void calculateBounds() {
     GlyphLayout layout = new GlyphLayout(font, text);
     float rectWidth = layout.width + padding * 2;
     float rectHeight = layout.height + padding * 2;
-    bounds = new Rectangle(x - rectWidth / 2, y - layout.height - padding, rectWidth, rectHeight);
+    if (isCircular) {
+      float diameter = Math.max(rectWidth, rectHeight);
+      bounds = new Rectangle(x - diameter / 2, y - diameter / 2, diameter, diameter);
+    } else {
+      bounds = new Rectangle(x - rectWidth / 2, y - layout.height - padding, rectWidth, rectHeight);
+    }
   }
 
   public void render(ShapeRenderer shapeRenderer, SpriteBatch batch) {
     // Draw the button background
     shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     shapeRenderer.setColor(backgroundColor);
-    shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
+    if (isCircular) {
+      shapeRenderer.circle(x, y, bounds.width / 2);
+    } else {
+      shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
+    }
     shapeRenderer.end();
 
     // Draw the button text
     batch.begin();
     font.setColor(textColor);
     GlyphLayout layout = new GlyphLayout(font, text);
-    font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2 - padding);
+    if (isCircular) {
+      font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2);
+    } else {
+      font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2);
+    }
     batch.end();
   }
 
