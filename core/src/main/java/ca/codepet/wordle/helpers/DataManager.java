@@ -4,29 +4,45 @@ import java.util.Arrays;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
+import com.badlogic.gdx.utils.Json;
 
 /**
  * The statistics class for the Wordle game.
  */
-public class PlayerStats {
+public class DataManager {
 
   // The number of games guessed correctly in that many tries
   // 1 - 6 tries. Index 0 represents the number of games the player
   // did not guess the word in 6 tries.
-  private final int[] stats = new int[7];
+  private PlayerData playerData = new PlayerData();
 
   // Save preferences
   private Preferences prefs;
+  private Json json;
 
-  public PlayerStats() {
+  public DataManager() {
     prefs = Gdx.app.getPreferences("Wordle");
+    json = new Json();
+    load();
   }
 
   /**
    * Saves the player's statistics
    */
   public void save() {
+    String jsonData = json.toJson(playerData);
+    prefs.putString("playerData", jsonData);
+    prefs.flush();
+  }
 
+  /**
+   * Loads the player's statistics
+   */
+  public void load() {
+    String jsonData = prefs.getString("playerData", null);
+    if (jsonData != null) {
+      playerData = json.fromJson(PlayerData.class, jsonData);
+    }
   }
 
   /**
@@ -39,7 +55,7 @@ public class PlayerStats {
     if (attempts < 0 || attempts > 6) {
       return;
     }
-    stats[attempts]++;
+    playerData.stats[attempts]++;
   }
 
   /**
@@ -48,7 +64,7 @@ public class PlayerStats {
    * @return The number of games played.
    */
   public int gamesPlayed() {
-    return Arrays.stream(stats).sum();
+    return Arrays.stream(playerData.stats).sum();
   }
 
   /**
@@ -57,7 +73,7 @@ public class PlayerStats {
    * @return The number of games won.
    */
   public int getGamesWonByAttempts(int attempts) {
-    return stats[attempts];
+    return playerData.stats[attempts];
   }
 
   /**
@@ -66,7 +82,7 @@ public class PlayerStats {
    * @return The number of games won.
    */
   public int getGamesWon() {
-    return Arrays.stream(stats).sum() - stats[0];
+    return Arrays.stream(playerData.stats).sum() - playerData.stats[0];
   }
 
   /**
@@ -75,7 +91,7 @@ public class PlayerStats {
    * @return The number of games lost.
    */
   public int getGamesLost() {
-    return stats[0];
+    return playerData.stats[0];
   }
 
   /**

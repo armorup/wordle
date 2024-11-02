@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.util.FontUtil;
-import ca.codepet.wordle.helpers.PlayerStats;
+import ca.codepet.wordle.helpers.DataManager;
 import ca.codepet.wordle.screens.GameScreen;
 import ca.codepet.wordle.screens.SplashScreen;
 
@@ -20,7 +20,7 @@ public class MainGame extends Game {
     public BitmapFont faRegularFont;
     public BitmapFont faSolidFont;
     public AssetManager assets;
-    public PlayerStats playerStats;
+    public DataManager playerStats;
 
     @Override
     public void create() {
@@ -29,7 +29,7 @@ public class MainGame extends Game {
         faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 36);
         faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
         assets = new AssetManager();
-        playerStats = new PlayerStats();
+        playerStats = new DataManager();
 
         GameScreen gameScreen = new GameScreen(this);
         SplashScreen splashScreen = new SplashScreen(this, gameScreen);
