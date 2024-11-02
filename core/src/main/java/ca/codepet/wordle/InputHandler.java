@@ -10,6 +10,7 @@ public class InputHandler extends InputAdapter {
   private final Wordle wordle;
   private Rectangle playAgainButtonBounds;
   private Rectangle statsButtonBounds;
+  private Rectangle helpButtonBounds;
 
   public InputHandler(Wordle wordle, MainGame game) {
     this.wordle = wordle;
@@ -46,8 +47,24 @@ public class InputHandler extends InputAdapter {
     statsButtonBounds = bounds;
   }
 
+  public void setHelpButtonBounds(Rectangle bounds) {
+    helpButtonBounds = bounds;
+    System.out.println("Help button bounds set");
+  }
+
   @Override
   public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+    // Check if the help button was pressed
+    if (helpButtonBounds != null) {
+      Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+      if (helpButtonBounds.contains(touchPos.x, touchPos.y)) {
+        // Show the help screen
+        game.setScreen(new InstructionScreen(game, game.getScreen()));
+        return true;
+      }
+    }
+
+    // Check if the game is over
     if (wordle.isGameOver()) {
       // Check if the play again button was pressed
       if (playAgainButtonBounds != null) {
@@ -67,6 +84,7 @@ public class InputHandler extends InputAdapter {
           return true;
         }
       }
+
     }
 
     return false;

@@ -9,30 +9,25 @@ public class WinMessages {
     {
       put(1, List.of(
           "Genius!",
-          "Unbelievable!",
-          "First try!",
-          "Incredible!"));
+          "Icredible!"));
 
       put(2, List.of(
           "Impressive!",
           "Amazing!",
-          "On fire!",
           "Wow!"));
 
       put(3, List.of(
           "Great job!",
           "Nice!",
-          "Easy peasy!"));
+          "Easy peasy"));
 
       put(4, List.of(
           "Well done!",
-          "Nice solve!",
-          "Keep it up!"));
+          "Nice!"));
 
       put(5, List.of(
           "Well done!",
-          "Nice solve!",
-          "Keep it up!"));
+          "Nice!"));
 
       put(6, List.of(
           "Just in time!",

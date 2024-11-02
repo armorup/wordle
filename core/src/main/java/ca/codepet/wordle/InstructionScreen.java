@@ -7,17 +7,17 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
-public class InstructionsScreen extends InputAdapter implements Screen {
+public class InstructionScreen extends InputAdapter implements Screen {
 
   private final MainGame game;
   private final Screen previousScreen;
   private final Texture instructionTexture;
   private final SpriteBatch batch;
 
-  public InstructionsScreen(MainGame game, Screen previousScreen) {
+  public InstructionScreen(MainGame game, Screen previousScreen) {
     this.game = game;
     this.previousScreen = previousScreen;
-    this.instructionTexture = new Texture(Gdx.files.internal("instruction.png"));
+    this.instructionTexture = new Texture(Gdx.files.internal("images/instructions.png"));
     this.batch = new SpriteBatch();
   }
 
@@ -32,10 +32,19 @@ public class InstructionsScreen extends InputAdapter implements Screen {
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
     batch.begin();
-    // Draw the instruction image centered on the screen
-    float x = (Gdx.graphics.getWidth() - instructionTexture.getWidth()) / 2;
-    float y = (Gdx.graphics.getHeight() - instructionTexture.getHeight()) / 2;
-    batch.draw(instructionTexture, x, y);
+    // Calculate the scaling factors to fit the image on the screen
+    float screenWidth = Gdx.graphics.getWidth();
+    float screenHeight = Gdx.graphics.getHeight();
+    float imageWidth = instructionTexture.getWidth();
+    float imageHeight = instructionTexture.getHeight();
+    float scale = Math.min(screenWidth / imageWidth, screenHeight / imageHeight);
+
+    // Calculate the position to center the image
+    float x = (screenWidth - imageWidth * scale) / 2;
+    float y = (screenHeight - imageHeight * scale) / 2;
+
+    // Draw the resized image
+    batch.draw(instructionTexture, x, y, imageWidth * scale, imageHeight * scale);
     batch.end();
   }
 
