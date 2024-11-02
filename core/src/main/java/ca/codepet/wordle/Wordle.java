@@ -62,7 +62,7 @@ public final class Wordle {
     System.out.println("Target word: " + targetWord);
   }
 
-  /*
+  /**
    * Choose a random word from the list of words.
    */
   private static String chooseRandomWord() {
@@ -70,7 +70,7 @@ public final class Wordle {
     return laWords.get(random.nextInt(laWords.size()));
   }
 
-  /*
+  /**
    * Check if a word is a valid word in the game.
    */
   private boolean isValidWord(String word) {
@@ -79,7 +79,7 @@ public final class Wordle {
     return taValid || laValid;
   }
 
-  /*
+  /**
    * Handle backspace key press.
    */
   public void backspace() {
@@ -89,7 +89,7 @@ public final class Wordle {
     }
   }
 
-  /*
+  /**
    * Add a letter to the current guess.
    */
   public void addLetter(char letter) {
@@ -100,28 +100,28 @@ public final class Wordle {
     grid.addLetter(letter);
   }
 
-  /*
+  /**
    * Render the Wordle game grid.
    */
   public void render(float delta, SpriteBatch batch, BitmapFont font) {
     grid.render(delta, batch, font);
   }
 
-  /*
+  /**
    * Get the current guess as a string.
    */
   public String getCurrentGuess() {
     return grid.currentGuess();
   }
 
-  /*
+  /**
    * Check if the game is over.
    */
   public boolean isGameOver() {
     return pastGuesses.size() >= ROWS || hasWon();
   }
 
-  /*
+  /**
    * Check if the player has won the game.
    */
   public boolean hasWon() {
@@ -137,7 +137,7 @@ public final class Wordle {
     return won;
   }
 
-  /*
+  /**
    * Get the feedback message to display to the player.
    */
   public String getMessage() {
@@ -148,7 +148,7 @@ public final class Wordle {
     message = "";
   }
 
-  /*
+  /**
    * Submit the current guess and check it against the target word.
    */
   public boolean submitGuess() {
@@ -182,14 +182,14 @@ public final class Wordle {
     return true;
   }
 
-  /*
+  /**
    * Get list of past guesses.
    */
   public List<Feedback> getPastGuesses() {
     return pastGuesses;
   }
 
-  /*
+  /**
    * Inner class to represent a feedback for a guess.
    */
   public class Feedback {
@@ -216,7 +216,7 @@ public final class Wordle {
     }
   }
 
-  /*
+  /**
    * Check a guess against the target word and return feedback.
    */
   private Feedback checkGuess(String guess, String targetWord) {
@@ -319,7 +319,7 @@ class Grid {
     UNCHECKED, CORRECT, WRONG_POSITION, INCORRECT
   }
 
-  /*
+  /**
    * Inner class to represent a cell in the grid.
    */
   public class Cell {
