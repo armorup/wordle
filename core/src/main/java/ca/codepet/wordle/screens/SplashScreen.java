@@ -9,7 +9,7 @@ public class SplashScreen extends InfoScreen {
   private float timeElapsed = 0;
 
   public SplashScreen(MainGame game, Screen nextScreen) {
-    super(game, nextScreen, "images/libgdx.png");
+    super(game, nextScreen, "images/splash.png", 0.4f);
     this.nextScreen = nextScreen;
   }
 

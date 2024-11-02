@@ -15,12 +15,14 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
   protected final Screen previousScreen;
   protected final Texture infoTexture;
   protected final SpriteBatch batch;
+  protected final float scale;
 
-  public InfoScreen(MainGame game, Screen previousScreen, String texturePath) {
+  public InfoScreen(MainGame game, Screen previousScreen, String texturePath, float scale) {
     this.game = game;
     this.previousScreen = previousScreen;
-    this.infoTexture = (texturePath == null) ? null : new Texture(Gdx.files.internal(texturePath));
+    this.infoTexture = new Texture(Gdx.files.internal(texturePath));
     this.batch = new SpriteBatch();
+    this.scale = scale;
   }
 
   @Override
@@ -39,18 +41,17 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
       float screenHeight = Gdx.graphics.getHeight();
       float imageWidth = infoTexture.getWidth();
       float imageHeight = infoTexture.getHeight();
-      float scale = Math.min(screenWidth / imageWidth, screenHeight / imageHeight);
+      float scaleFactor = Math.min(screenWidth / imageWidth, screenHeight / imageHeight) * scale;
 
       // Calculate the position to center the image
-      float x = (screenWidth - imageWidth * scale) / 2;
-      float y = (screenHeight - imageHeight * scale) / 2;
+      float x = (screenWidth - imageWidth * scaleFactor) / 2;
+      float y = (screenHeight - imageHeight * scaleFactor) / 2;
 
       // Draw the resized image
       batch.begin();
-      batch.draw(infoTexture, x, y, imageWidth * scale, imageHeight * scale);
+      batch.draw(infoTexture, x, y, imageWidth * scaleFactor, imageHeight * scaleFactor);
       batch.end();
     }
-
   }
 
   @Override

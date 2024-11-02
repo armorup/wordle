@@ -7,7 +7,7 @@ import ca.codepet.wordle.MainGame;
 public class StatsScreen extends InfoScreen {
 
   public StatsScreen(MainGame game, Screen previousScreen) {
-    super(game, previousScreen, null);
+    super(game, previousScreen, null, 1);
   }
 
   @Override
