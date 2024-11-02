@@ -19,7 +19,7 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
   public InfoScreen(MainGame game, Screen previousScreen, String texturePath) {
     this.game = game;
     this.previousScreen = previousScreen;
-    this.infoTexture = new Texture(Gdx.files.internal(texturePath));
+    this.infoTexture = (texturePath == null) ? null : new Texture(Gdx.files.internal(texturePath));
     this.batch = new SpriteBatch();
   }
 
@@ -33,21 +33,24 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
     Gdx.gl.glClearColor(0, 0, 0, 1); // Set the clear color to black
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
-    batch.begin();
-    // Calculate the scaling factors to fit the image on the screen
-    float screenWidth = Gdx.graphics.getWidth();
-    float screenHeight = Gdx.graphics.getHeight();
-    float imageWidth = infoTexture.getWidth();
-    float imageHeight = infoTexture.getHeight();
-    float scale = Math.min(screenWidth / imageWidth, screenHeight / imageHeight);
+    if (infoTexture != null) {
+      // Calculate the scaling factors to fit the image on the screen
+      float screenWidth = Gdx.graphics.getWidth();
+      float screenHeight = Gdx.graphics.getHeight();
+      float imageWidth = infoTexture.getWidth();
+      float imageHeight = infoTexture.getHeight();
+      float scale = Math.min(screenWidth / imageWidth, screenHeight / imageHeight);
 
-    // Calculate the position to center the image
-    float x = (screenWidth - imageWidth * scale) / 2;
-    float y = (screenHeight - imageHeight * scale) / 2;
+      // Calculate the position to center the image
+      float x = (screenWidth - imageWidth * scale) / 2;
+      float y = (screenHeight - imageHeight * scale) / 2;
 
-    // Draw the resized image
-    batch.draw(infoTexture, x, y, imageWidth * scale, imageHeight * scale);
-    batch.end();
+      // Draw the resized image
+      batch.begin();
+      batch.draw(infoTexture, x, y, imageWidth * scale, imageHeight * scale);
+      batch.end();
+    }
+
   }
 
   @Override

@@ -1,5 +1,7 @@
 package ca.codepet.wordle.helpers;
 
+import java.util.Arrays;
+
 /**
  * The statistics class for the Wordle game.
  */
@@ -11,10 +13,16 @@ public class PlayerStats {
   private final int[] stats = new int[7];
 
   /**
-   * Increments the number of games lost.
+   * Increments the number of games won in the given number of attempts.
+   *
+   * @param attempts The number of attempts it took to guess the word. 0 if
+   *                 the player did not guess the word. -1 if void.
    */
-  public void incrementGamesLost() {
-    stats[0]++;
+  public void guessedIn(int attempts) {
+    if (attempts < 0 || attempts > 6) {
+      return;
+    }
+    stats[attempts]++;
   }
 
   /**
@@ -23,11 +31,7 @@ public class PlayerStats {
    * @return The number of games played.
    */
   public int gamesPlayed() {
-    int total = 0;
-    for (int i = 0; i < stats.length; i++) {
-      total += stats[i];
-    }
-    return total;
+    return Arrays.stream(stats).sum();
   }
 
   /**
@@ -37,6 +41,15 @@ public class PlayerStats {
    */
   public int getGamesWonByAttempts(int attempts) {
     return stats[attempts];
+  }
+
+  /**
+   * Gets the number of games won.
+   *
+   * @return The number of games won.
+   */
+  public int getGamesWon() {
+    return Arrays.stream(stats).sum() - stats[0];
   }
 
   /**
@@ -58,8 +71,6 @@ public class PlayerStats {
     if (gamesPlayed == 0) {
       return 0;
     }
-    int gamesLost = getGamesLost();
-    int gamesWon = gamesPlayed - gamesLost;
-    return (double) gamesWon / gamesPlayed * 100;
+    return (double) getGamesWon() / gamesPlayed * 100;
   }
 }

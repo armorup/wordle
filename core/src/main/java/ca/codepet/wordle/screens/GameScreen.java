@@ -32,7 +32,7 @@ public class GameScreen implements Screen {
 
     public GameScreen(MainGame game) {
         this.game = game;
-        this.wordle = new Wordle();
+        this.wordle = new Wordle(game);
         this.inputHandler = new InputHandler(wordle, game);
         this.shapeRenderer = new ShapeRenderer();
 

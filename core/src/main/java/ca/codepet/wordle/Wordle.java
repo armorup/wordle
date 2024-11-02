@@ -33,6 +33,9 @@ public final class Wordle {
   private String message = "";
   private String winMessage = "";
 
+  private MainGame game;
+  private boolean statsRecorded = false;
+
   /*
    * Load the word lists from files when the class is loaded.
    */
@@ -46,7 +49,8 @@ public final class Wordle {
   /*
    * Constructor for a new Wordle game with a random target word.
    */
-  public Wordle() {
+  public Wordle(MainGame game) {
+    this.game = game;
     restart();
   }
 
@@ -57,6 +61,7 @@ public final class Wordle {
     pastGuesses.clear();
     message = "";
     winMessage = "";
+    statsRecorded = false;
     grid = new Grid(ROWS, COLS);
     this.targetWord = chooseRandomWord();
     System.out.println("Target word: " + targetWord);
@@ -118,23 +123,42 @@ public final class Wordle {
    * Check if the game is over.
    */
   public boolean isGameOver() {
-    return pastGuesses.size() >= ROWS || hasWon();
+    boolean gameIsOver = hasWon() || hasLost();
+    if (gameIsOver && !statsRecorded) {
+      recordStats();
+    }
+    return gameIsOver;
   }
 
   /**
-   * Check if the player has won the game.
+   * True if the player has won the game.
    */
   public boolean hasWon() {
-    // Check if the player has guessed the correct word
-    boolean won = !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
-    if (won) {
-      int attempts = pastGuesses.size();
-      if (winMessage.isBlank()) {
-        winMessage = WinMessages.getMessage(attempts);
-      }
-      message = winMessage;
+    return !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+  }
+
+  /**
+   * True if the player has lost the game.
+   */
+  public boolean hasLost() {
+    return pastGuesses.size() >= ROWS && !hasWon();
+  }
+
+  /**
+   * Record the game stats after the game is over.
+   */
+  public void recordStats() {
+    int attempts = pastGuesses.size();
+    winMessage = winMessage.isBlank() ? WinMessages.getMessage(attempts) : winMessage;
+    message = winMessage;
+
+    if (hasWon()) {
+      game.playerStats.guessedIn(attempts);
+    } else if (hasLost()) {
+      game.playerStats.guessedIn(0);
     }
-    return won;
+    statsRecorded = true;
+
   }
 
   /**
