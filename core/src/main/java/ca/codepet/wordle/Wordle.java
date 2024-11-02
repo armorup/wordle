@@ -55,7 +55,7 @@ public final class Wordle {
    */
   public void restart() {
     pastGuesses.clear();
-    message = "Type a Word";
+    message = "Begin typing...";
     winMessage = "";
     grid = new Grid(ROWS, COLS);
     this.targetWord = chooseRandomWord();

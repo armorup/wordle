@@ -17,11 +17,7 @@ public class Button {
   private final float padding;
   private Rectangle bounds;
 
-  // Constructor with default values
-  public Button(String text, float x, float y, BitmapFont font) {
-    this(text, x, y, font, Color.WHITE, Color.DARK_GRAY, 10);
-  }
-
+  // Constructor with all parameters
   public Button(String text, float x, float y, BitmapFont font, Color textColor, Color backgroundColor, float padding) {
     this.text = text;
     this.x = x;
@@ -33,11 +29,16 @@ public class Button {
     calculateBounds();
   }
 
+  // Overloaded constructor with default values
+  public Button(String text, float x, float y, BitmapFont font) {
+    this(text, x, y, font, Color.WHITE, Color.DARK_GRAY, 10);
+  }
+
   private void calculateBounds() {
     GlyphLayout layout = new GlyphLayout(font, text);
     float rectWidth = layout.width + padding * 2;
     float rectHeight = layout.height + padding * 2;
-    bounds = new Rectangle(x - padding, y - layout.height - padding, rectWidth, rectHeight);
+    bounds = new Rectangle(x - rectWidth / 2, y - layout.height - padding, rectWidth, rectHeight);
   }
 
   public void render(ShapeRenderer shapeRenderer, SpriteBatch batch) {
@@ -51,7 +52,7 @@ public class Button {
     batch.begin();
     font.setColor(textColor);
     GlyphLayout layout = new GlyphLayout(font, text);
-    font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2);
+    font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2 - padding);
     batch.end();
   }
 

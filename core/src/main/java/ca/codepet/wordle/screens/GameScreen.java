@@ -6,11 +6,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Rectangle;
 
 import ca.codepet.wordle.MainGame;
 import ca.codepet.wordle.Wordle;
 import ca.codepet.wordle.helpers.InputHandler;
+import ca.codepet.wordle.ui.Button;
 
 /**
  * The main game screen where the Wordle game is played.
@@ -26,12 +26,22 @@ public class GameScreen implements Screen {
     private final Wordle wordle; // The Wordle game object
     private final InputHandler inputHandler; // Input handler for the game
     private final ShapeRenderer shapeRenderer; // ShapeRenderer for drawing shapes
+    private final Button playAgainButton;
+    private final Button statsButton;
+    private final Button helpButton;
 
     public GameScreen(MainGame game) {
         this.game = game;
         this.wordle = new Wordle();
         this.inputHandler = new InputHandler(wordle, game);
         this.shapeRenderer = new ShapeRenderer();
+
+        // Initialize buttons
+        float y = Gdx.graphics.getHeight() * 0.32f;
+        playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font);
+        statsButton = new Button("Your Stats", Gdx.graphics.getWidth() / 2, y - 100, game.font);
+        helpButton = new Button("?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
+                game.faSolidFont);
     }
 
     @Override
@@ -46,23 +56,27 @@ public class GameScreen implements Screen {
         // Render the wordle grid
         wordle.render(delta, game.batch, game.font);
 
-        game.batch.begin();
         // Render a game message
+        game.batch.begin();
         float y = Gdx.graphics.getHeight() * 0.32f;
         renderMessage(wordle.getMessage(), y);
+        game.batch.end();
 
         // Render help button
-        float xHelp = Gdx.graphics.getWidth() - 50;
-        float yHelp = Gdx.graphics.getHeight() - 50;
-        helpButton(xHelp, yHelp);
+        helpButton.render(shapeRenderer, game.batch);
+        if (Gdx.input.justTouched()) {
+            inputHandler.setHelpButtonBounds(helpButton.getBounds());
+        }
 
         // Render game over and stats buttons
         if (wordle.isGameOver()) {
-            // Render the play again button
-            playAgainButton(y);
-            // Render the stats button
-            statsButton(y);
-
+            playAgainButton.render(shapeRenderer, game.batch);
+            statsButton.render(shapeRenderer, game.batch);
+            // Check for touch input on the buttons
+            if (Gdx.input.justTouched()) {
+                inputHandler.setPlayAgainButtonBounds(playAgainButton.getBounds());
+                inputHandler.setStatsButtonBounds(statsButton.getBounds());
+            }
         }
 
     }
@@ -72,81 +86,6 @@ public class GameScreen implements Screen {
         float xMessage = (Gdx.graphics.getWidth() - layout.width) / 2;
         game.font.setColor(Color.WHITE);
         game.font.draw(game.batch, layout, xMessage, y);
-        game.batch.end();
-    }
-
-    private void playAgainButton(float y) {
-        String playAgainText = "Play Again";
-        GlyphLayout playAgainLayout = new GlyphLayout(game.font, playAgainText);
-        float xPlayAgain = (Gdx.graphics.getWidth() - playAgainLayout.width) / 2;
-        float yPlayAgain = y - 50;
-        float padding = 10;
-        float rectWidth = playAgainLayout.width + padding * 2;
-        float rectHeight = playAgainLayout.height + padding * 2;
-        Rectangle playAgainButtonBounds = new Rectangle(xPlayAgain - padding,
-                yPlayAgain - playAgainLayout.height - padding, rectWidth, rectHeight);
-        inputHandler.setPlayAgainButtonBounds(playAgainButtonBounds);
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(xPlayAgain - padding, yPlayAgain - playAgainLayout.height - padding, rectWidth,
-                rectHeight);
-        shapeRenderer.end();
-
-        // Render the play again button text
-        game.batch.begin();
-        game.font.setColor(Color.WHITE);
-        game.font.draw(game.batch, playAgainLayout, xPlayAgain, yPlayAgain);
-        game.batch.end();
-    }
-
-    private void statsButton(float y) {
-        String statsText = "Your Stats";
-        GlyphLayout statsLayout = new GlyphLayout(game.font, statsText);
-        float xStats = (Gdx.graphics.getWidth() - statsLayout.width) / 2;
-        float yStats = y - 100;
-        float padding = 10;
-        float rectWidth = statsLayout.width + padding * 2;
-        float rectHeight = statsLayout.height + padding * 2;
-        Rectangle statsButtonBounds = new Rectangle(xStats - padding, yStats - statsLayout.height - padding, rectWidth,
-                rectHeight);
-        inputHandler.setStatsButtonBounds(statsButtonBounds);
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(xStats - padding, yStats - statsLayout.height - padding, rectWidth, rectHeight);
-        shapeRenderer.end();
-
-        // Render the stats button text
-        game.batch.begin();
-        game.font.setColor(Color.WHITE);
-        game.font.draw(game.batch, statsLayout, xStats, yStats);
-        game.batch.end();
-    }
-
-    private void helpButton(float x, float y) {
-        String text = "?"; // TODO: Use FontAwesome question mark icon
-        GlyphLayout layout = new GlyphLayout(game.faSolidFont, text);
-        float padding = 10;
-        float radius = Math.max(layout.width, layout.height) / 2 + padding;
-        float centerX = x;
-        float centerY = y;
-
-        // Set the bounds for touch detection
-        Rectangle helpButtonBounds = new Rectangle(centerX - radius, centerY - radius, radius * 2, radius * 2);
-        inputHandler.setHelpButtonBounds(helpButtonBounds);
-
-        // Render the circular background
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.circle(centerX, centerY, radius);
-        shapeRenderer.end();
-
-        // Render the help button text
-        game.batch.begin();
-        game.faSolidFont.setColor(Color.WHITE);
-        game.faSolidFont.draw(game.batch, layout, x - layout.width / 2, y + layout.height / 2);
-        game.batch.end();
     }
 
     @Override
