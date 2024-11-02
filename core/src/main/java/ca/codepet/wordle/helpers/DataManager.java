@@ -9,16 +9,16 @@ import com.badlogic.gdx.utils.Json;
 /**
  * The statistics class for the Wordle game.
  */
-public class DataManager {
+public final class DataManager {
 
   // The number of games guessed correctly in that many tries
   // 1 - 6 tries. Index 0 represents the number of games the player
   // did not guess the word in 6 tries.
-  private PlayerData playerData = new PlayerData();
+  private UserData playerData = new UserData();
 
   // Save preferences
-  private Preferences prefs;
-  private Json json;
+  private final Preferences prefs;
+  private final Json json;
 
   public DataManager() {
     prefs = Gdx.app.getPreferences("Wordle");
@@ -41,7 +41,7 @@ public class DataManager {
   public void load() {
     String jsonData = prefs.getString("playerData", null);
     if (jsonData != null) {
-      playerData = json.fromJson(PlayerData.class, jsonData);
+      playerData = json.fromJson(UserData.class, jsonData);
     }
   }
 
