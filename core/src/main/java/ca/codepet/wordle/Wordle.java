@@ -134,7 +134,13 @@ public final class Wordle {
    * True if the player has won the game.
    */
   public boolean hasWon() {
-    return !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+    boolean won = !pastGuesses.isEmpty() && pastGuesses.get(pastGuesses.size() - 1).isCorrect();
+    if (won) {
+      int attempts = pastGuesses.size();
+      winMessage = winMessage.isBlank() ? WinMessages.getMessage(attempts) : winMessage;
+      message = winMessage;
+    }
+    return won;
   }
 
   /**
@@ -149,14 +155,13 @@ public final class Wordle {
    */
   public void recordStats() {
     int attempts = pastGuesses.size();
-    winMessage = winMessage.isBlank() ? WinMessages.getMessage(attempts) : winMessage;
-    message = winMessage;
 
     if (hasWon()) {
       game.playerStats.guessedIn(attempts);
     } else if (hasLost()) {
       game.playerStats.guessedIn(0);
     }
+    game.playerStats.save();
     statsRecorded = true;
 
   }

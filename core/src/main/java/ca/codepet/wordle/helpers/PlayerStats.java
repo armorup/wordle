@@ -2,6 +2,9 @@ package ca.codepet.wordle.helpers;
 
 import java.util.Arrays;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
+
 /**
  * The statistics class for the Wordle game.
  */
@@ -11,6 +14,20 @@ public class PlayerStats {
   // 1 - 6 tries. Index 0 represents the number of games the player
   // did not guess the word in 6 tries.
   private final int[] stats = new int[7];
+
+  // Save preferences
+  private Preferences prefs;
+
+  public PlayerStats() {
+    prefs = Gdx.app.getPreferences("Wordle");
+  }
+
+  /**
+   * Saves the player's statistics
+   */
+  public void save() {
+
+  }
 
   /**
    * Increments the number of games won in the given number of attempts.

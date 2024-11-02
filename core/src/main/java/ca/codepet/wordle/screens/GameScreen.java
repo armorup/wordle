@@ -63,19 +63,19 @@ public class GameScreen implements Screen {
 
         // Render help button
         helpButton.render(shapeRenderer, game.batch);
-        if (Gdx.input.justTouched()) {
-            inputHandler.setHelpButtonBounds(helpButton.getBounds());
-        }
+        // if (Gdx.input.justTouched()) {
+        inputHandler.setHelpButtonBounds(helpButton.getBounds());
+        // }
 
         // Render game over and stats buttons
         if (wordle.isGameOver()) {
             playAgainButton.render(shapeRenderer, game.batch);
             statsButton.render(shapeRenderer, game.batch);
             // Check for touch input on the buttons
-            if (Gdx.input.justTouched()) {
-                inputHandler.setPlayAgainButtonBounds(playAgainButton.getBounds());
-                inputHandler.setStatsButtonBounds(statsButton.getBounds());
-            }
+            // if (Gdx.input.justTouched()) {
+            inputHandler.setPlayAgainButtonBounds(playAgainButton.getBounds());
+            inputHandler.setStatsButtonBounds(statsButton.getBounds());
+            // }
         }
 
     }
