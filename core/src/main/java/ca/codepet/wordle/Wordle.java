@@ -147,7 +147,11 @@ public final class Wordle {
    * True if the player has lost the game.
    */
   public boolean hasLost() {
-    return pastGuesses.size() >= ROWS && !hasWon();
+    boolean lost = pastGuesses.size() >= ROWS && !hasWon();
+    if (lost) {
+      message = "The word was: " + targetWord;
+    }
+    return lost;
   }
 
   /**
