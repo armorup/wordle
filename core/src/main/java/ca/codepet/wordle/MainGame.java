@@ -19,30 +19,29 @@ public class MainGame extends Game {
     public BitmapFont font;
     public BitmapFont faRegularFont;
     public BitmapFont faSolidFont;
-    public AssetManager assets;
+    public AssetManager assetManager;
     public UserDataManager userDataManager;
+    public final int SEED = 12345;
 
     @Override
     public void create() {
         batch = new SpriteBatch();
         font = FontUtil.generateFont("fonts/Play-Regular.ttf", 36);
-        faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 36);
-        faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
-        assets = new AssetManager();
+        faRegularFont = FontUtil.generateFontAwesome("fonts/FA-Regular-400.otf", 36);
+        faSolidFont = FontUtil.generateFontAwesome("fonts/FA-Solid-900.otf", 36);
+        assetManager = new AssetManager();
         userDataManager = new UserDataManager();
 
         GameScreen gameScreen = new GameScreen(this);
         SplashScreen splashScreen = new SplashScreen(this, gameScreen);
         setScreen(splashScreen);
-
-        // setScreen(new GameScreen(this));
     }
 
     @Override
     public void dispose() {
         batch.dispose();
         font.dispose();
-        assets.dispose();
+        assetManager.dispose();
         faRegularFont.dispose();
         faSolidFont.dispose();
     }

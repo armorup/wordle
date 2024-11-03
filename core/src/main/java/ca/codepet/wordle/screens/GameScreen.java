@@ -29,6 +29,7 @@ public class GameScreen implements Screen {
     private final Button playAgainButton;
     private final Button statsButton;
     private final Button helpButton;
+    private final Button achievementButton;
 
     public GameScreen(MainGame game) {
         this.game = game;
@@ -40,10 +41,13 @@ public class GameScreen implements Screen {
         float y = Gdx.graphics.getHeight() * 0.32f;
         playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, Color.WHITE,
                 Color.SKY, 10, false);
-        statsButton = new Button("S", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120, game.faSolidFont,
-                true);
         helpButton = new Button("?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
                 game.faSolidFont, true);
+        achievementButton = new Button("!", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120,
+                game.faSolidFont, true);
+        statsButton = new Button("S", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 190,
+                game.faSolidFont,
+                true);
 
     }
 
@@ -67,6 +71,10 @@ public class GameScreen implements Screen {
         // Render help button
         helpButton.render(shapeRenderer, game.batch);
         inputHandler.setHelpButtonBounds(helpButton.getBounds());
+
+        // Render achievement button
+        achievementButton.render(shapeRenderer, game.batch);
+        inputHandler.setAchievementButtonBounds(achievementButton.getBounds());
 
         statsButton.render(shapeRenderer, game.batch);
         inputHandler.setStatsButtonBounds(statsButton.getBounds());

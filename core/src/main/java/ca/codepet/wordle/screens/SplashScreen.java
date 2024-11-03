@@ -19,7 +19,7 @@ public class SplashScreen extends InfoScreen {
 
     timeElapsed += delta;
 
-    if (game.assets.update()) {
+    if (game.assetManager.update()) {
       // Assets are loaded
       if (timeElapsed > 2) {
         // Show the next screen

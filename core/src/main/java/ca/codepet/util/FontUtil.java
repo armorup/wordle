@@ -20,4 +20,23 @@ public class FontUtil {
     generator.dispose();
     return generatedFont;
   }
+
+  public static BitmapFont generateFontAwesome(String fontFilePath, int fontSize) {
+    FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontFilePath));
+    FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+    parameter.size = fontSize;
+    // Start with default characters
+    StringBuilder fontAwesomeChars = new StringBuilder(FreeTypeFontGenerator.DEFAULT_CHARS);
+
+    // Add all FontAwesome icon characters from FAIcons enum
+    for (FAIcons icon : FAIcons.values()) {
+      fontAwesomeChars.append(icon.code());
+    }
+
+    // Set the generated characters string
+    parameter.characters = fontAwesomeChars.toString();
+    BitmapFont generatedFont = generator.generateFont(parameter);
+    generator.dispose();
+    return generatedFont;
+  }
 }
