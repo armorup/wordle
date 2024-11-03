@@ -9,18 +9,18 @@ import com.badlogic.gdx.utils.Json;
 /**
  * The statistics class for the Wordle game.
  */
-public final class DataManager {
+public final class UserDataManager {
 
   // The number of games guessed correctly in that many tries
   // 1 - 6 tries. Index 0 represents the number of games the player
   // did not guess the word in 6 tries.
-  private UserData playerData = new UserData();
+  private UserData userData = new UserData();
 
   // Save preferences
   private final Preferences prefs;
   private final Json json;
 
-  public DataManager() {
+  public UserDataManager() {
     prefs = Gdx.app.getPreferences("Wordle");
     json = new Json();
     load();
@@ -30,7 +30,7 @@ public final class DataManager {
    * Saves the player's statistics
    */
   public void save() {
-    String jsonData = json.toJson(playerData);
+    String jsonData = json.toJson(userData);
     prefs.putString("playerData", jsonData);
     prefs.flush();
   }
@@ -41,8 +41,17 @@ public final class DataManager {
   public void load() {
     String jsonData = prefs.getString("playerData", null);
     if (jsonData != null) {
-      playerData = json.fromJson(UserData.class, jsonData);
+      userData = json.fromJson(UserData.class, jsonData);
     }
+  }
+
+  /**
+   * Resets the player's statistics
+   */
+  public void reset() {
+    prefs.clear();
+    userData = new UserData();
+    save();
   }
 
   /**
@@ -55,7 +64,7 @@ public final class DataManager {
     if (attempts < 0 || attempts > 6) {
       return;
     }
-    playerData.stats[attempts]++;
+    userData.stats[attempts]++;
   }
 
   /**
@@ -64,7 +73,7 @@ public final class DataManager {
    * @return The number of games played.
    */
   public int gamesPlayed() {
-    return Arrays.stream(playerData.stats).sum();
+    return Arrays.stream(userData.stats).sum();
   }
 
   /**
@@ -73,7 +82,7 @@ public final class DataManager {
    * @return The number of games won.
    */
   public int getGamesWonByAttempts(int attempts) {
-    return playerData.stats[attempts];
+    return userData.stats[attempts];
   }
 
   /**
@@ -82,7 +91,7 @@ public final class DataManager {
    * @return The number of games won.
    */
   public int getGamesWon() {
-    return Arrays.stream(playerData.stats).sum() - playerData.stats[0];
+    return Arrays.stream(userData.stats).sum() - userData.stats[0];
   }
 
   /**
@@ -91,7 +100,7 @@ public final class DataManager {
    * @return The number of games lost.
    */
   public int getGamesLost() {
-    return playerData.stats[0];
+    return userData.stats[0];
   }
 
   /**

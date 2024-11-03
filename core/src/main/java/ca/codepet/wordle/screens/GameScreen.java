@@ -38,10 +38,13 @@ public class GameScreen implements Screen {
 
         // Initialize buttons
         float y = Gdx.graphics.getHeight() * 0.32f;
-        playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, false);
-        statsButton = new Button("Your Stats", Gdx.graphics.getWidth() / 2, y - 100, game.font, false);
+        playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, Color.WHITE,
+                Color.SKY, 10, false);
+        statsButton = new Button("S", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120, game.faSolidFont,
+                true);
         helpButton = new Button("?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
                 game.faSolidFont, true);
+
     }
 
     @Override
@@ -63,18 +66,19 @@ public class GameScreen implements Screen {
 
         // Render help button
         helpButton.render(shapeRenderer, game.batch);
-        // if (Gdx.input.justTouched()) {
         inputHandler.setHelpButtonBounds(helpButton.getBounds());
-        // }
+
+        statsButton.render(shapeRenderer, game.batch);
+        inputHandler.setStatsButtonBounds(statsButton.getBounds());
 
         // Render game over and stats buttons
         if (wordle.isGameOver()) {
             playAgainButton.render(shapeRenderer, game.batch);
-            statsButton.render(shapeRenderer, game.batch);
+
             // Check for touch input on the buttons
             // if (Gdx.input.justTouched()) {
             inputHandler.setPlayAgainButtonBounds(playAgainButton.getBounds());
-            inputHandler.setStatsButtonBounds(statsButton.getBounds());
+
             // }
         }
 

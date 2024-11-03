@@ -157,11 +157,11 @@ public final class Wordle {
     int attempts = pastGuesses.size();
 
     if (hasWon()) {
-      game.playerStats.guessedIn(attempts);
+      game.userDataManager.guessedIn(attempts);
     } else if (hasLost()) {
-      game.playerStats.guessedIn(0);
+      game.userDataManager.guessedIn(0);
     }
-    game.playerStats.save();
+    game.userDataManager.save();
     statsRecorded = true;
 
   }
@@ -318,7 +318,7 @@ class Grid {
   private final Cell[][] cells;
   final Cursor cursor = new Cursor();
 
-  private final ShapeRenderer shape = new ShapeRenderer();
+  private final ShapeRenderer shapeRenderer = new ShapeRenderer();
 
   // Constructor for a new empty grid
   public Grid(int rows, int cols) {
@@ -470,17 +470,18 @@ class Grid {
     float startY = Gdx.graphics.getHeight() * 0.5f + gridHeight * 0.6f;
 
     // Render the grid tile
-    shape.begin(ShapeRenderer.ShapeType.Filled);
+    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         float x = startX + col * (cellSize + cellPadding);
         float y = startY - row * (cellSize + cellPadding);
         // Draw the cell tile
-        shape.setColor(Color.DARK_GRAY);
-        shape.rect(x, y, cellSize, cellSize);
+        // TODO: Make this rounded rect
+        shapeRenderer.setColor(Color.DARK_GRAY);
+        shapeRenderer.rect(x, y, cellSize, cellSize);
       }
     }
-    shape.end();
+    shapeRenderer.end();
 
     // Render the letters
     batch.begin();

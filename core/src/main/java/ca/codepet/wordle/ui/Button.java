@@ -7,6 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
+import ca.codepet.util.Draw;
+
 public class Button {
   private final String text;
   private final float x;
@@ -56,7 +58,7 @@ public class Button {
     if (isCircular) {
       shapeRenderer.circle(x, y, bounds.width / 2);
     } else {
-      shapeRenderer.rect(bounds.x, bounds.y, bounds.width, bounds.height);
+      Draw.roundedRect(shapeRenderer, bounds.x, bounds.y, bounds.width, bounds.height, 10);
     }
     shapeRenderer.end();
 

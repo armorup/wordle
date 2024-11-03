@@ -78,6 +78,16 @@ public class InputHandler extends InputAdapter {
       }
     }
 
+    // Check if the stats button was pressed
+    if (statsButtonBounds != null) {
+      Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+      if (statsButtonBounds.contains(touchPos.x, touchPos.y)) {
+        // Show the stats screen
+        game.setScreen(new StatsScreen(game, game.getScreen()));
+        return true;
+      }
+    }
+
     // Check if the game is over
     if (wordle.isGameOver()) {
       // Check if the play again button was pressed
@@ -86,15 +96,6 @@ public class InputHandler extends InputAdapter {
         if (playAgainButtonBounds.contains(touchPos.x, touchPos.y)) {
           // Restart the game
           wordle.restart();
-          return true;
-        }
-      }
-      // Check if the stats button was pressed
-      if (statsButtonBounds != null) {
-        Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-        if (statsButtonBounds.contains(touchPos.x, touchPos.y)) {
-          // Show the stats screen
-          game.setScreen(new StatsScreen(game, game.getScreen()));
           return true;
         }
       }
