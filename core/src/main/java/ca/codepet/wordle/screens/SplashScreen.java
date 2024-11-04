@@ -10,7 +10,7 @@ public class SplashScreen extends BaseScreen {
   private float timeElapsed = 0;
 
   public SplashScreen(MainGame game, Screen nextScreen) {
-    super(game, nextScreen, "images/splash.png", 0.4f);
+    super(game, nextScreen, "images/teamh.png", 1f);
   }
 
   @Override
@@ -22,7 +22,7 @@ public class SplashScreen extends BaseScreen {
     // Assets have finished loading
     if (game.assets.update()) {
       // Show the next screen after 1.5 seconds
-      if (timeElapsed > 1.5f) {
+      if (timeElapsed > 2f) {
         game.setScreen(nextScreen);
       }
     }
