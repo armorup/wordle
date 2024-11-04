@@ -36,11 +36,11 @@ public class GameScreen extends BaseScreen {
 
     // Initialize buttons
     float y = Gdx.graphics.getHeight() * 0.32f;
-    playAgainButton = new Button("Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, Color.WHITE,
+    playAgainButton = new Button(game, "Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, Color.WHITE,
         Color.SKY, 10, false);
-    statsButton = new Button("S", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120, game.faSolidFont,
+    statsButton = new Button(game, "S", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120, game.faSolidFont,
         true);
-    helpButton = new Button("?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
+    helpButton = new Button(game, "?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
         game.faSolidFont, true);
 
   }

@@ -35,6 +35,8 @@ public class MainGame extends Game {
         assetManager.load("audio/click-b.ogg", com.badlogic.gdx.audio.Sound.class);
         assetManager.load("audio/music.mp3", com.badlogic.gdx.audio.Sound.class);
 
+        assetManager.load("images/button_round_gradient.png", com.badlogic.gdx.graphics.Texture.class);
+
         GameScreen gameScreen = new GameScreen(this);
         setScreen(new SplashScreen(this, gameScreen));
     }
