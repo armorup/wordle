@@ -34,7 +34,7 @@ public class GameScreen extends BaseScreen {
   public GameScreen(MainGame game) {
     super(game);
     this.wordle = new Wordle(game);
-    this.keyboard = new Keyboard();
+    this.keyboard = new Keyboard(game);
     this.inputHandler = new InputHandler(wordle, game);
     this.shapeRenderer = new ShapeRenderer();
 
@@ -62,11 +62,11 @@ public class GameScreen extends BaseScreen {
     wordle.render(delta, game.batch, game.font);
 
     // Render the keyboard
-    game.batch.begin();
-    // keyboard.render(game.batch);
-    KeyCap keyCap = new KeyCap("A", 100, 100);
-    keyCap.render(game.batch);
-    game.batch.end();
+    if (!wordle.isGameOver()) {
+      game.batch.begin();
+      keyboard.render(game.batch);
+      game.batch.end();
+    }
 
     // Render a game message
     float y = Gdx.graphics.getHeight() * 0.32f;
