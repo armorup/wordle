@@ -14,6 +14,7 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
+import ca.codepet.wordle.helpers.LetterStatus;
 import ca.codepet.util.FileUtils;
 import ca.codepet.wordle.helpers.WinMessages;
 import ca.codepet.wordle.screens.GameScreen;
@@ -223,7 +224,7 @@ public final class Wordle {
   }
 
   /**
-   * Inner class to represent a feedback for a guess.
+   * Represent a feedback for a guess.
    */
   public class Feedback {
     public final String guess;
@@ -263,7 +264,7 @@ public final class Wordle {
       char targetChar = targetWord.charAt(i);
       if (guessChar == targetChar) {
         Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
-        cell.status = Grid.CellStatus.CORRECT;
+        cell.status = LetterStatus.CORRECT;
         cell.color = GameScreen.CORRECT_COLOR;
         grid.setCell(grid.cursor.getRow(), i, cell);
         feedbackColors[i] = GameScreen.CORRECT_COLOR;
@@ -279,7 +280,7 @@ public final class Wordle {
         for (int j = 0; j < targetWord.length(); j++) {
           if (!checkedTarget[j] && guessChar == targetWord.charAt(j)) {
             Grid.Cell cell = grid.getCell(grid.cursor.getRow(), i);
-            cell.status = Grid.CellStatus.WRONG_POSITION;
+            cell.status = LetterStatus.WRONG_POSITION;
             cell.color = GameScreen.WRONG_POSITION_COLOR;
             grid.setCell(grid.cursor.getRow(), i, cell);
             feedbackColors[i] = GameScreen.WRONG_POSITION_COLOR;
@@ -348,27 +349,23 @@ class Grid {
     return sb.toString();
   }
 
-  enum CellStatus {
-    UNCHECKED, CORRECT, WRONG_POSITION, INCORRECT
-  }
-
   /**
    * Inner class to represent a cell in the grid.
    */
   public class Cell {
     public char letter;
     public Color color;
-    public CellStatus status;
+    public LetterStatus status;
 
     public Cell() {
-      this(' ', Color.WHITE, CellStatus.UNCHECKED);
+      this(' ', Color.WHITE, LetterStatus.UNCHECKED);
     }
 
     public Cell(char letter) {
-      this(letter, Color.WHITE, CellStatus.UNCHECKED);
+      this(letter, Color.WHITE, LetterStatus.UNCHECKED);
     }
 
-    public Cell(char letter, Color color, CellStatus status) {
+    public Cell(char letter, Color color, LetterStatus status) {
       this.letter = letter;
       this.color = color;
       this.status = status;

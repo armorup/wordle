@@ -10,6 +10,8 @@ import ca.codepet.wordle.MainGame;
 import ca.codepet.wordle.Wordle;
 import ca.codepet.wordle.helpers.InputHandler;
 import ca.codepet.wordle.ui.Button;
+import ca.codepet.wordle.ui.KeyCap;
+import ca.codepet.wordle.ui.Keyboard;
 
 /**
  * The main game screen where the Wordle game is played.
@@ -27,10 +29,12 @@ public class GameScreen extends BaseScreen {
   private final Button playAgainButton;
   private final Button statsButton;
   private final Button helpButton;
+  private final Keyboard keyboard;
 
   public GameScreen(MainGame game) {
     super(game);
     this.wordle = new Wordle(game);
+    this.keyboard = new Keyboard();
     this.inputHandler = new InputHandler(wordle, game);
     this.shapeRenderer = new ShapeRenderer();
 
@@ -52,10 +56,17 @@ public class GameScreen extends BaseScreen {
 
   @Override
   public void render(float delta) {
-    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
+    Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
     // Render the wordle grid
     wordle.render(delta, game.batch, game.font);
+
+    // Render the keyboard
+    game.batch.begin();
+    // keyboard.render(game.batch);
+    KeyCap keyCap = new KeyCap("A", 100, 100);
+    keyCap.render(game.batch);
+    game.batch.end();
 
     // Render a game message
     float y = Gdx.graphics.getHeight() * 0.32f;

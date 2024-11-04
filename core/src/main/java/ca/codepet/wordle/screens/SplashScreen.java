@@ -19,12 +19,9 @@ public class SplashScreen extends BaseScreen {
 
     timeElapsed += delta;
 
-    // Assets have finished loading
-    if (game.assets.update()) {
-      // Show the next screen after 1.5 seconds
-      if (timeElapsed > 1.5f) {
-        game.setScreen(nextScreen);
-      }
+    // Show the next screen after 1.5 seconds
+    if (timeElapsed > 1.5f) {
+      game.setScreen(nextScreen);
     }
 
   }
