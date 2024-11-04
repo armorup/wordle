@@ -65,10 +65,10 @@ public class Keyboard {
   public void handleClick(float mouseX, float mouseY) {
     for (KeyCap key : keys) {
       if (key.isClicked(mouseX, mouseY)) {
-        key.setSelected(true); // Update the key state as needed
+        // Update the key state as needed
         // Handle key press logic here (e.g., update game state)
       } else {
-        key.setSelected(false); // Reset the key state if not clicked
+        // Reset the key state if not clicked
       }
     }
   }

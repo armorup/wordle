@@ -358,11 +358,11 @@ class Grid {
     public LetterStatus status;
 
     public Cell() {
-      this(' ', Color.WHITE, LetterStatus.UNCHECKED);
+      this(' ', Color.WHITE, LetterStatus.UNSELECTED);
     }
 
     public Cell(char letter) {
-      this(letter, Color.WHITE, LetterStatus.UNCHECKED);
+      this(letter, Color.WHITE, LetterStatus.UNSELECTED);
     }
 
     public Cell(char letter, Color color, LetterStatus status) {

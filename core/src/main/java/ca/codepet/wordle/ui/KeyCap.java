@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Rectangle;
 
+import ca.codepet.wordle.helpers.LetterStatus;
+
 public class KeyCap {
   private static final float KEY_WIDTH = 40;
   private static final float KEY_HEIGHT = 50;
@@ -14,7 +16,7 @@ public class KeyCap {
   private final BitmapFont font;
   private Texture keyTexture; // Background texture for the key
   private final Rectangle bounds; // Hitbox for detecting clicks
-  private boolean isSelected;
+  private LetterStatus status;
 
   public KeyCap(String letter, BitmapFont font, float x, float y) {
     this(letter, font, x, y, KEY_WIDTH, KEY_HEIGHT);
@@ -25,8 +27,7 @@ public class KeyCap {
     this.font = font;
     this.keyTexture = new Texture("images/button_square_gradient.png");
     this.bounds = new Rectangle(x, y, width, height);
-    this.isSelected = false;
-
+    this.status = LetterStatus.UNSELECTED;
   }
 
   public void render(SpriteBatch batch) {
@@ -44,9 +45,25 @@ public class KeyCap {
     font.draw(batch, layout, textX, textY);
 
     // Optionally change color or texture based on the state
-    if (isSelected) {
-      // Change texture or color to indicate the key was pressed
+    switch (status) {
+      case UNSELECTED:
+        // Do nothing
+        break;
+      case CORRECT:
+        // Change the key texture to a green gradient
+        keyTexture = new Texture("images/button_square_green.png");
+        break;
+      case WRONG_POSITION:
+        // Change the key texture to a yellow gradient
+        keyTexture = new Texture("images/button_square_yellow.png");
+        break;
+      case INCORRECT:
+        // Change the key texture to a red gradient
+        keyTexture = new Texture("images/button_square_red.png");
+        break;
+
     }
+
   }
 
   public void update() {
@@ -55,10 +72,6 @@ public class KeyCap {
 
   public boolean isClicked(float mouseX, float mouseY) {
     return bounds.contains(mouseX, mouseY);
-  }
-
-  public void setSelected(boolean selected) {
-    this.isSelected = selected;
   }
 
   public String getLetter() {
