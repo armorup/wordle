@@ -81,6 +81,9 @@ public class InputHandler extends InputAdapter {
     if (helpButtonBounds != null) {
       Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
       if (helpButtonBounds.contains(touchPos.x, touchPos.y)) {
+        // Play the drop.mp3 sound
+        playClickSound();
+
         // Show the help screen
         game.setScreen(new InstructionScreen(game, game.getScreen()));
         return false;
@@ -91,6 +94,7 @@ public class InputHandler extends InputAdapter {
     if (statsButtonBounds != null) {
       Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
       if (statsButtonBounds.contains(touchPos.x, touchPos.y)) {
+        playClickSound();
         // Show the stats screen
         game.setScreen(new StatsScreen(game, game.getScreen()));
         return true;
@@ -113,6 +117,7 @@ public class InputHandler extends InputAdapter {
       if (playAgainButtonBounds != null) {
         Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
         if (playAgainButtonBounds.contains(touchPos.x, touchPos.y)) {
+          playClickSound();
           // Restart the game
           wordle.restart();
           return true;
@@ -123,4 +128,11 @@ public class InputHandler extends InputAdapter {
     return false;
   }
 
+  private void playClickSound() {
+    // Randomly play one of the two click sounds
+    if (Math.random() > 0.5)
+      game.assetManager.get("audio/click-a.ogg", com.badlogic.gdx.audio.Sound.class).play();
+    else
+      game.assetManager.get("audio/click-b.ogg", com.badlogic.gdx.audio.Sound.class).play();
+  }
 }

@@ -11,8 +11,7 @@ import ca.codepet.wordle.screens.GameScreen;
 import ca.codepet.wordle.screens.SplashScreen;
 
 /**
- * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
- * platforms.
+ * The main game
  */
 public class MainGame extends Game {
     public SpriteBatch batch;
@@ -27,6 +26,7 @@ public class MainGame extends Game {
     public void create() {
         batch = new SpriteBatch();
         font = FontUtil.generateFont("fonts/Play-Regular.ttf", 36);
+<<<<<<< HEAD
         faRegularFont = FontUtil.generateFontAwesome("fonts/FA-Regular-400.otf", 36);
         faSolidFont = FontUtil.generateFontAwesome("fonts/FA-Solid-900.otf", 36);
         assetManager = new AssetManager();
@@ -35,6 +35,22 @@ public class MainGame extends Game {
         GameScreen gameScreen = new GameScreen(this);
         SplashScreen splashScreen = new SplashScreen(this, gameScreen);
         setScreen(splashScreen);
+=======
+        faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 36);
+        faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
+        assetManager = new AssetManager();
+        userDataManager = new UserDataManager();
+
+        // Load sounds into asset manager
+        assetManager.load("audio/click-a.ogg", com.badlogic.gdx.audio.Sound.class);
+        assetManager.load("audio/click-b.ogg", com.badlogic.gdx.audio.Sound.class);
+        assetManager.load("audio/music.mp3", com.badlogic.gdx.audio.Sound.class);
+
+        assetManager.load("images/button_round_gradient.png", com.badlogic.gdx.graphics.Texture.class);
+
+        GameScreen gameScreen = new GameScreen(this);
+        setScreen(new SplashScreen(this, gameScreen));
+>>>>>>> origin/main
     }
 
     @Override

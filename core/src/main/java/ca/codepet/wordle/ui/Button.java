@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
 import ca.codepet.util.Draw;
+import ca.codepet.wordle.MainGame;
 
 public class Button {
   private final String text;
@@ -20,9 +21,13 @@ public class Button {
   private Rectangle bounds;
   private final boolean isCircular;
 
+  private final MainGame game;
+
   // Constructor with all parameters
-  public Button(String text, float x, float y, BitmapFont font, Color textColor, Color backgroundColor, float padding,
+  public Button(MainGame game, String text, float x, float y, BitmapFont font, Color textColor, Color backgroundColor,
+      float padding,
       boolean isCircular) {
+    this.game = game;
     this.text = text;
     this.x = x;
     this.y = y;
@@ -31,12 +36,13 @@ public class Button {
     this.backgroundColor = backgroundColor;
     this.padding = padding;
     this.isCircular = isCircular;
+
     calculateBounds();
   }
 
   // Overloaded constructor with default values
-  public Button(String text, float x, float y, BitmapFont font, boolean isCircular) {
-    this(text, x, y, font, Color.WHITE, Color.DARK_GRAY, 10, isCircular);
+  public Button(MainGame game, String text, float x, float y, BitmapFont font, boolean isCircular) {
+    this(game, text, x, y, font, Color.WHITE, Color.DARK_GRAY, 10, isCircular);
   }
 
   private void calculateBounds() {

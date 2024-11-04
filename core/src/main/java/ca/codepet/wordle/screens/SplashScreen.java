@@ -1,16 +1,16 @@
 package ca.codepet.wordle.screens;
 
 import com.badlogic.gdx.Screen;
-
 import ca.codepet.wordle.MainGame;
 
-public class SplashScreen extends InfoScreen {
-  private final Screen nextScreen;
+/**
+ * The splash screen that is displayed when the game is launched.
+ */
+public class SplashScreen extends BaseScreen {
   private float timeElapsed = 0;
 
   public SplashScreen(MainGame game, Screen nextScreen) {
-    super(game, nextScreen, "images/splash.png", 0.4f);
-    this.nextScreen = nextScreen;
+    super(game, nextScreen, "images/teamh.png", 1f);
   }
 
   @Override
@@ -19,10 +19,17 @@ public class SplashScreen extends InfoScreen {
 
     timeElapsed += delta;
 
+<<<<<<< HEAD
     if (game.assetManager.update()) {
       // Assets are loaded
       if (timeElapsed > 2) {
         // Show the next screen
+=======
+    // Assets have finished loading
+    if (game.assetManager.update()) {
+      // Show the next screen after 1.5 seconds
+      if (timeElapsed > 2f) {
+>>>>>>> origin/main
         game.setScreen(nextScreen);
       }
     }
