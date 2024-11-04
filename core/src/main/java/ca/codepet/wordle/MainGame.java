@@ -32,10 +32,7 @@ public class MainGame extends Game {
         userDataManager = new UserDataManager();
 
         GameScreen gameScreen = new GameScreen(this);
-        SplashScreen splashScreen = new SplashScreen(this, gameScreen);
-        setScreen(splashScreen);
-
-        // setScreen(new GameScreen(this));
+        setScreen(new SplashScreen(this, gameScreen));
     }
 
     @Override

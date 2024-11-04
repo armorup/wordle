@@ -9,6 +9,10 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.wordle.MainGame;
 
+/**
+ * Base screen class that provides a background image and navigation to the next
+ * screen.
+ */
 public abstract class BaseScreen extends InputAdapter implements Screen {
 
   protected final MainGame game;

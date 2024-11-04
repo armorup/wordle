@@ -6,6 +6,9 @@ import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
 import ca.codepet.wordle.MainGame;
 
+/**
+ * The screen that displays the player's game statistics.
+ */
 public class StatsScreen extends BaseScreen {
 
     public StatsScreen(MainGame game, Screen previousScreen) {
