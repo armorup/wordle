@@ -11,15 +11,14 @@ import ca.codepet.wordle.screens.GameScreen;
 import ca.codepet.wordle.screens.SplashScreen;
 
 /**
- * {@link com.badlogic.gdx.ApplicationListener} implementation shared by all
- * platforms.
+ * The main game
  */
 public class MainGame extends Game {
     public SpriteBatch batch;
     public BitmapFont font;
     public BitmapFont faRegularFont;
     public BitmapFont faSolidFont;
-    public AssetManager assets;
+    public AssetManager assetManager;
     public UserDataManager userDataManager;
 
     @Override
@@ -28,8 +27,13 @@ public class MainGame extends Game {
         font = FontUtil.generateFont("fonts/Play-Regular.ttf", 36);
         faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 36);
         faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
-        assets = new AssetManager();
+        assetManager = new AssetManager();
         userDataManager = new UserDataManager();
+
+        // Load sounds into asset manager
+        assetManager.load("audio/click-a.ogg", com.badlogic.gdx.audio.Sound.class);
+        assetManager.load("audio/click-b.ogg", com.badlogic.gdx.audio.Sound.class);
+        assetManager.load("audio/music.mp3", com.badlogic.gdx.audio.Sound.class);
 
         GameScreen gameScreen = new GameScreen(this);
         setScreen(new SplashScreen(this, gameScreen));
@@ -39,7 +43,7 @@ public class MainGame extends Game {
     public void dispose() {
         batch.dispose();
         font.dispose();
-        assets.dispose();
+        assetManager.dispose();
         faRegularFont.dispose();
         faSolidFont.dispose();
     }
