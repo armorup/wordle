@@ -9,20 +9,34 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 import ca.codepet.wordle.MainGame;
 
-public abstract class InfoScreen extends InputAdapter implements Screen {
+public abstract class BaseScreen extends InputAdapter implements Screen {
 
   protected final MainGame game;
-  protected final Screen previousScreen;
-  protected final Texture infoTexture;
+  protected final Screen nextScreen;
+  protected Texture bgTexturePath;
+  protected final float bgTextureScale;
   protected final SpriteBatch batch;
-  protected final float scale;
 
-  public InfoScreen(MainGame game, Screen previousScreen, String texturePath, float scale) {
+  /**
+   * If no next screen navigation is needed
+   */
+  public BaseScreen(MainGame game) {
+    this(game, null);
+  }
+
+  public BaseScreen(MainGame game, Screen nextScreen) {
+    this(game, nextScreen, null, 1f);
+  }
+
+  public BaseScreen(MainGame game, Screen nextScreen, String texturePath, float scale) {
     this.game = game;
-    this.previousScreen = previousScreen;
-    this.infoTexture = new Texture(Gdx.files.internal(texturePath));
+    this.nextScreen = nextScreen;
+    if (texturePath != null) {
+      this.bgTexturePath = new Texture(Gdx.files.internal(texturePath));
+    }
+
     this.batch = new SpriteBatch();
-    this.scale = scale;
+    this.bgTextureScale = scale;
   }
 
   @Override
@@ -35,13 +49,13 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
     Gdx.gl.glClearColor(0, 0, 0, 1); // Set the clear color to black
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
-    if (infoTexture != null) {
+    if (bgTexturePath != null) {
       // Calculate the scaling factors to fit the image on the screen
       float screenWidth = Gdx.graphics.getWidth();
       float screenHeight = Gdx.graphics.getHeight();
-      float imageWidth = infoTexture.getWidth();
-      float imageHeight = infoTexture.getHeight();
-      float scaleFactor = Math.min(screenWidth / imageWidth, screenHeight / imageHeight) * scale;
+      float imageWidth = bgTexturePath.getWidth();
+      float imageHeight = bgTexturePath.getHeight();
+      float scaleFactor = Math.min(screenWidth / imageWidth, screenHeight / imageHeight) * bgTextureScale;
 
       // Calculate the position to center the image
       float x = (screenWidth - imageWidth * scaleFactor) / 2;
@@ -49,7 +63,7 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
 
       // Draw the resized image
       batch.begin();
-      batch.draw(infoTexture, x, y, imageWidth * scaleFactor, imageHeight * scaleFactor);
+      batch.draw(bgTexturePath, x, y, imageWidth * scaleFactor, imageHeight * scaleFactor);
       batch.end();
     }
   }
@@ -77,19 +91,21 @@ public abstract class InfoScreen extends InputAdapter implements Screen {
   @Override
   public void dispose() {
     // Destroy screen's assets here.
-    infoTexture.dispose();
+    bgTexturePath.dispose();
     batch.dispose();
   }
 
   @Override
   public boolean keyDown(int keycode) {
-    game.setScreen(previousScreen);
+    game.setScreen(nextScreen);
     return true;
   }
 
   @Override
   public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-    game.setScreen(previousScreen);
+    if (nextScreen != null && Gdx.input.justTouched()) {
+      game.setScreen(nextScreen);
+    }
     return true;
   }
 }

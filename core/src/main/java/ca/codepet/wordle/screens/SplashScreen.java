@@ -4,7 +4,7 @@ import com.badlogic.gdx.Screen;
 
 import ca.codepet.wordle.MainGame;
 
-public class SplashScreen extends InfoScreen {
+public class SplashScreen extends BaseScreen {
   private final Screen nextScreen;
   private float timeElapsed = 0;
 
@@ -21,7 +21,7 @@ public class SplashScreen extends InfoScreen {
 
     if (game.assets.update()) {
       // Assets are loaded
-      if (timeElapsed > 2) {
+      if (timeElapsed > 1.5f) {
         // Show the next screen
         game.setScreen(nextScreen);
       }
