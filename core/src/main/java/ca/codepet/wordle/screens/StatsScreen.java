@@ -18,6 +18,9 @@ public class StatsScreen extends BaseScreen {
     @Override
     public void render(float delta) {
         super.render(delta);
+        game.batch.begin();
+
+        game.font.draw(game.batch, "x", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50);
 
         // If the player has not played any games, display a message
         if (game.userDataManager.gamesPlayed() == 0) {
@@ -25,15 +28,13 @@ public class StatsScreen extends BaseScreen {
             GlyphLayout layout = new GlyphLayout(game.font, message);
             float x = (Gdx.graphics.getWidth() - layout.width) / 2;
             float y = (Gdx.graphics.getHeight() + layout.height) / 2;
-
-            game.batch.begin();
             game.font.draw(game.batch, layout, x, y);
             game.batch.end();
             return;
         }
 
         // Render player stats
-        game.batch.begin();
+
         int y = 100;
         int yDiff = 50;
         game.font.draw(game.batch, "Win distribution", 50, y + yDiff * 11);
@@ -52,4 +53,5 @@ public class StatsScreen extends BaseScreen {
 
         game.batch.end();
     }
+
 }

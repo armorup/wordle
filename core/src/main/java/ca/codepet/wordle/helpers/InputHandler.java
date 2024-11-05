@@ -34,7 +34,6 @@ public class InputHandler extends InputAdapter {
 
     } else if (character == '\r' || character == '\n') {
       // Enter key pressed
-      System.out.println("Enter pressed");
       wordle.submitGuess();
 
     } else if (Character.isLetter(character)) {
@@ -47,7 +46,6 @@ public class InputHandler extends InputAdapter {
 
   public void setPlayAgainButtonBounds(Rectangle bounds) {
     if (playAgainButtonBounds == null) {
-      System.out.println("Play again button bounds set");
       playAgainButtonBounds = bounds;
     }
 
@@ -55,7 +53,6 @@ public class InputHandler extends InputAdapter {
 
   public void setStatsButtonBounds(Rectangle bounds) {
     if (statsButtonBounds == null) {
-      System.out.println("Stats button bounds set");
       statsButtonBounds = bounds;
     }
   }
@@ -63,14 +60,12 @@ public class InputHandler extends InputAdapter {
   public void setHelpButtonBounds(Rectangle bounds) {
     if (helpButtonBounds == null) {
       helpButtonBounds = bounds;
-      System.out.println("Help button bounds set");
     }
   }
 
   public void setImageRevealButtonBounds(Rectangle bounds) {
     if (imageRevealButtonBounds == null) {
       imageRevealButtonBounds = bounds;
-      System.out.println("Image reveal button bounds set");
     }
   }
 

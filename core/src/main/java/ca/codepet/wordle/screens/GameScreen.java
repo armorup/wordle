@@ -6,7 +6,6 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
-import ca.codepet.util.FAIcons;
 import ca.codepet.wordle.MainGame;
 import ca.codepet.wordle.Wordle;
 import ca.codepet.wordle.helpers.InputHandler;

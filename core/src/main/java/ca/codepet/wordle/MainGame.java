@@ -1,17 +1,13 @@
 package ca.codepet.wordle;
 
-import java.util.Random;
-
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 
 import ca.codepet.util.FontUtil;
 import ca.codepet.wordle.helpers.UserDataManager;
-import ca.codepet.wordle.screens.GameScreen;
 import ca.codepet.wordle.screens.SplashScreen;
 
 /**
@@ -25,18 +21,14 @@ public class MainGame extends Game {
     public AssetManager assetManager;
     public UserDataManager userDataManager;
 
-    private final int SEED = 12345;
-    public Random random;
-
     @Override
     public void create() {
         batch = new SpriteBatch();
         font = FontUtil.generateFont("fonts/Play-Regular.ttf", 36);
-        faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 36);
+        faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 30);
         faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
         assetManager = new AssetManager();
         userDataManager = new UserDataManager();
-        random = new Random(SEED);
 
         // Reset user data
         userDataManager.reset();
