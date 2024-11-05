@@ -26,8 +26,6 @@ public class GameScreen extends BaseScreen {
   private final Button playAgainButton;
   private final Button statsButton;
   private final Button helpButton;
-  private final Button imageRevealButton;
-  private boolean revealStarted = false;
   private Texture backgroundTexture;
 
   public GameScreen(MainGame game) {
@@ -36,7 +34,7 @@ public class GameScreen extends BaseScreen {
     this.inputHandler = new InputHandler(wordle, game);
 
     // Set the background texture from wordle challenges
-    backgroundTexture = new Texture("images/challenges/beach.png");
+    updateChallengeImage();
 
     // Initialize buttons
     float y = Gdx.graphics.getHeight() * 0.32f;
@@ -46,8 +44,9 @@ public class GameScreen extends BaseScreen {
         true);
     helpButton = new Button(game, "?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
         game.faSolidFont, true);
-    imageRevealButton = new Button(game, "!", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 180,
-        game.faSolidFont, true);
+    // imageRevealButton = new Button(game, "!", Gdx.graphics.getWidth() - 50,
+    // Gdx.graphics.getHeight() - 180,
+    // game.faSolidFont, true);
 
   }
 
@@ -62,10 +61,8 @@ public class GameScreen extends BaseScreen {
 
     game.batch.begin();
 
-    // Update and render the reveal effect if it has started
-    if (revealStarted) {
-      game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-    }
+    // Render the background
+    renderBackground();
 
     // Render the wordle grid
     wordle.render(delta, game.batch, game.font);
@@ -82,20 +79,17 @@ public class GameScreen extends BaseScreen {
     statsButton.render(game.batch);
     inputHandler.setStatsButtonBounds(statsButton.getBounds());
 
-    // Render imageReveal button
-    imageRevealButton.render(game.batch);
-    inputHandler.setImageRevealButtonBounds(imageRevealButton.getBounds());
+    // // Render imageReveal button
+    // imageRevealButton.render(game.batch);
+    // inputHandler.setImageRevealButtonBounds(imageRevealButton.getBounds());
 
-    // Render play again button if the game is over
     if (wordle.isGameOver()) {
-      if (!revealStarted) {
-        startReveal();
-      }
+      // Render play again button if the game is over
       playAgainButton.render(game.batch);
       inputHandler.setPlayAgainButtonBounds(playAgainButton.getBounds());
+      updateChallengeImage();
     }
     game.batch.end();
-
   }
 
   private void renderMessage(String message, float y) {
@@ -105,8 +99,18 @@ public class GameScreen extends BaseScreen {
     game.font.draw(game.batch, layout, xMessage, y);
   }
 
-  private void startReveal() {
-    revealStarted = true;
+  private void updateChallengeImage() {
+    String path = wordle.getChallengeTexturePath();
+    if (path == null) {
+      return;
+    }
+    backgroundTexture = new Texture(path);
+  }
+
+  private void renderBackground() {
+    if (backgroundTexture != null) {
+      game.batch.draw(backgroundTexture, 0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+    }
   }
 
 }

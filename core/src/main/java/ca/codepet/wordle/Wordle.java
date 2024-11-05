@@ -1,6 +1,7 @@
 package ca.codepet.wordle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -25,8 +26,8 @@ public final class Wordle {
 
   Grid grid;
 
-  private String[] challenges = { "BEACH", "BLAZE", "CLIFF", "CLOUD", "FROST", "PETAL", "ONION", "SHARK", "STONE",
-      "RIVER" };
+  private static final List<String> challenges = Arrays.asList(
+      "beach", "blaze", "cliff", "cloud", "frost", "petal", "onion", "shark", "stone", "river");
 
   private String targetWord; // The target word for this game
   private final List<Feedback> pastGuesses = new ArrayList<>(); // List of past guesses and their feedback
@@ -66,16 +67,47 @@ public final class Wordle {
     winMessage = "";
     statsRecorded = false;
     grid = new Grid(ROWS, COLS);
-    this.targetWord = chooseRandomWord();
+    this.targetWord = nextWord();
     System.out.println("Target word: " + targetWord);
   }
 
   /**
+   * Choose the next word
+   */
+  public String nextWord() {
+    int gamesWon = game.userDataManager.getGamesWon();
+    String target;
+    if (gamesWon == 0) {
+      target = challenges.get(0);
+    } else if (gamesWon % 3 != 0) {
+      target = chooseRandomWord();
+    } else {
+      target = challenges.get(gamesWon / 3);
+    }
+    return target.toUpperCase();
+  }
+
+  public String getChallengeTexturePath() {
+    int gamesWon = game.userDataManager.getGamesWon();
+    if (gamesWon == 0) {
+      return null;
+    }
+    int index = gamesWon % 3 == 0 ? gamesWon / 3 - 1 : gamesWon / 3;
+    String path = "images/challenges/" + challenges.get(index) + ".png";
+    return path;
+  }
+
+  /**
    * Choose a random word from the list of words.
+   * The random word cannot be one of the challenge words
    */
   private static String chooseRandomWord() {
     Random random = new Random();
-    return laWords.get(random.nextInt(laWords.size()));
+    String word = "beach";
+    while (challenges.contains(word)) {
+      word = laWords.get(random.nextInt(laWords.size()));
+    }
+    return word;
   }
 
   /**
@@ -482,7 +514,7 @@ class Grid {
         float x = startX + col * (cellSize + cellPadding);
         float y = startY - row * (cellSize + cellPadding);
         // Draw the cell tile
-        batch.setColor(Color.DARK_GRAY);
+        batch.setColor(Color.GRAY);
         batch.draw(backTexture, x, y, cellSize, cellSize);
       }
     }

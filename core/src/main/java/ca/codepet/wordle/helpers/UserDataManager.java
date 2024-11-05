@@ -116,15 +116,4 @@ public final class UserDataManager {
     return (double) getGamesWon() / gamesPlayed * 100;
   }
 
-  /**
-   * Get current achievement level
-   */
-  public int getAchievementLevel() {
-    return getGamesWon();
-  }
-
-  public int getAchievementOpacity() {
-    return getGamesWon() * 3;
-  }
-
 }

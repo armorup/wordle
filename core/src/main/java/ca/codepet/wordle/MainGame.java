@@ -35,15 +35,34 @@ public class MainGame extends Game {
         assetManager = new AssetManager();
         userDataManager = new UserDataManager();
         random = new Random(SEED);
+
+        // Reset user data
+        userDataManager.reset();
+
         // Load sounds into asset manager
         assetManager.load("audio/click-a.ogg", com.badlogic.gdx.audio.Sound.class);
         assetManager.load("audio/click-b.ogg", com.badlogic.gdx.audio.Sound.class);
         assetManager.load("audio/music.mp3", com.badlogic.gdx.audio.Sound.class);
-
         assetManager.load("images/button_round_gradient.png", com.badlogic.gdx.graphics.Texture.class);
+
+        // Load challenge images
+        loadImages();
 
         GameScreen gameScreen = new GameScreen(this);
         setScreen(new SplashScreen(this, gameScreen));
+    }
+
+    private void loadImages() {
+        assetManager.load("images/challenges/beach.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/blaze.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/cliff.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/cloud.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/frost.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/onion.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/petal.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/river.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/shark.png", com.badlogic.gdx.graphics.Texture.class);
+        assetManager.load("images/challenges/stone.png", com.badlogic.gdx.graphics.Texture.class);
     }
 
     @Override
