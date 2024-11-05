@@ -36,7 +36,7 @@ public class StatsScreen extends BaseScreen {
         game.batch.begin();
         int y = 100;
         int yDiff = 50;
-        game.font.draw(game.batch, "Won in", 50, y + yDiff * 11);
+        game.font.draw(game.batch, "Win distribution", 50, y + yDiff * 11);
         game.font.draw(game.batch, " 1: " + game.userDataManager.getGamesWonByAttempts(1), 50, y + yDiff * 10);
         game.font.draw(game.batch, " 2: " + game.userDataManager.getGamesWonByAttempts(2), 50, y + yDiff * 9);
         game.font.draw(game.batch, " 3: " + game.userDataManager.getGamesWonByAttempts(3), 50, y + yDiff * 8);

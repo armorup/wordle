@@ -30,22 +30,22 @@ public class MainGame extends Game {
 
     @Override
     public void create() {
-        assetManager = new AssetManager();
-        // Load sounds and images
-        loadAudio();
-        loadImages();
-
         batch = new SpriteBatch();
         font = FontUtil.generateFont("fonts/Play-Regular.ttf", 36);
         faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 36);
         faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
-
+        assetManager = new AssetManager();
         userDataManager = new UserDataManager();
         random = new Random(SEED);
 
         // Reset user data
         userDataManager.reset();
 
+        // Load sounds and images
+        loadAudio();
+        loadImages();
+
+        // Load the splash screen
         setScreen(new SplashScreen(this, null));
     }
 
@@ -59,6 +59,7 @@ public class MainGame extends Game {
         // Button images
         assetManager.load("images/button_round_gradient.png", Texture.class);
         assetManager.load("images/button_square_flat.png", Texture.class);
+        assetManager.load("images/button_rectangle_flat.png", Texture.class);
 
         // Challenge images
         assetManager.load("images/challenges/beach.png", Texture.class);

@@ -37,7 +37,7 @@ public class Button {
     this.padding = padding;
     this.isCircular = isCircular;
     circularButtonTexture = new Texture("images/button_round_gradient.png");
-    rectangularButtonTexture = new Texture("images/button_square_flat.png");
+    rectangularButtonTexture = new Texture("images/button_rectangle_flat.png");
     calculateBounds();
   }
 

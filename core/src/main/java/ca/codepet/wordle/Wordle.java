@@ -79,7 +79,7 @@ public final class Wordle {
     String target;
     if (gamesWon == 0) {
       target = challenges.get(0);
-    } else if (gamesWon % 3 != 0) {
+    } else if (gamesWon % 3 != 0 || gamesWon / 3 >= challenges.size()) {
       target = chooseRandomWord();
     } else {
       target = challenges.get(gamesWon / 3);
@@ -92,8 +92,15 @@ public final class Wordle {
     if (gamesWon == 0) {
       return null;
     }
+
     int index = gamesWon % 3 == 0 ? gamesWon / 3 - 1 : gamesWon / 3;
-    String path = "images/challenges/" + challenges.get(index) + ".png";
+
+    String path;
+    if (index >= challenges.size()) {
+      path = "images/challenges/" + challenges.get(challenges.size() - 1) + ".png";
+    } else {
+      path = "images/challenges/" + challenges.get(index) + ".png";
+    }
     return path;
   }
 
