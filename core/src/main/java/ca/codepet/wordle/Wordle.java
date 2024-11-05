@@ -66,7 +66,7 @@ public final class Wordle {
     message = "";
     winMessage = "";
     statsRecorded = false;
-    grid = new Grid(ROWS, COLS);
+    grid = new Grid(game, ROWS, COLS);
     this.targetWord = nextWord();
     System.out.println("Target word: " + targetWord);
   }
@@ -359,8 +359,9 @@ class Grid {
   private final Texture backTexture;
 
   // Constructor for a new empty grid
-  public Grid(int rows, int cols) {
-    backTexture = new Texture("images/button_square_flat.png");
+  public Grid(MainGame game, int rows, int cols) {
+    // backTexture = new Texture("images/button_square_flat.png");
+    backTexture = game.assetManager.get("images/button_square_flat.png");
     this.rows = rows;
     this.cols = cols;
     this.cells = new Cell[rows][cols];

@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 
+import ca.codepet.util.FAIcons;
 import ca.codepet.wordle.MainGame;
 import ca.codepet.wordle.Wordle;
 import ca.codepet.wordle.helpers.InputHandler;
@@ -40,7 +41,7 @@ public class GameScreen extends BaseScreen {
     float y = Gdx.graphics.getHeight() * 0.32f;
     playAgainButton = new Button(game, "Play Again", Gdx.graphics.getWidth() / 2, y - 50, game.font, Color.WHITE,
         Color.SKY, 10, false);
-    statsButton = new Button(game, "S", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120, game.faSolidFont,
+    statsButton = new Button(game, "!", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 120, game.faSolidFont,
         true);
     helpButton = new Button(game, "?", Gdx.graphics.getWidth() - 50, Gdx.graphics.getHeight() - 50,
         game.faSolidFont, true);
@@ -104,7 +105,7 @@ public class GameScreen extends BaseScreen {
     if (path == null) {
       return;
     }
-    backgroundTexture = new Texture(path);
+    backgroundTexture = game.assetManager.get(path);
   }
 
   private void renderBackground() {
