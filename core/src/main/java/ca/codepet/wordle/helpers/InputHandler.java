@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 
 import ca.codepet.wordle.MainGame;
 import ca.codepet.wordle.Wordle;
-import ca.codepet.wordle.screens.ImageRevealScreen;
 import ca.codepet.wordle.screens.InstructionScreen;
 import ca.codepet.wordle.screens.StatsScreen;
 
@@ -17,7 +16,7 @@ public class InputHandler extends InputAdapter {
   private Rectangle playAgainButtonBounds;
   private Rectangle statsButtonBounds;
   private Rectangle helpButtonBounds;
-  private Rectangle achievementButtonBounds;
+  private Rectangle imageRevealButtonBounds;
 
   public InputHandler(Wordle wordle, MainGame game) {
     this.wordle = wordle;
@@ -68,10 +67,10 @@ public class InputHandler extends InputAdapter {
     }
   }
 
-  public void setAchievementButtonBounds(Rectangle bounds) {
-    if (achievementButtonBounds == null) {
-      achievementButtonBounds = bounds;
-      System.out.println("Achievement button bounds set");
+  public void setImageRevealButtonBounds(Rectangle bounds) {
+    if (imageRevealButtonBounds == null) {
+      imageRevealButtonBounds = bounds;
+      System.out.println("Image reveal button bounds set");
     }
   }
 
@@ -101,15 +100,15 @@ public class InputHandler extends InputAdapter {
       }
     }
 
-    // Check if the achievement button was pressed
-    if (achievementButtonBounds != null) {
-      Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
-      if (achievementButtonBounds.contains(touchPos.x, touchPos.y)) {
-        // Show the achievement screen
-        game.setScreen(new ImageRevealScreen(game, game.getScreen()));
-        return true;
-      }
-    }
+    // Show/hide image button
+    // if (imageRevealButtonBounds != null) {
+    // Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+    // if (imageRevealButtonBounds.contains(touchPos.x, touchPos.y)) {
+    // // Show the achievement screen
+    // game.setScreen(new ImageRevealScreen(game, game.getScreen()));
+    // return true;
+    // }
+    // }
 
     // Check if the game is over
     if (wordle.isGameOver()) {

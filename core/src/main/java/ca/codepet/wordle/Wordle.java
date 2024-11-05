@@ -12,7 +12,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Texture;
 
 import ca.codepet.util.FileUtils;
 import ca.codepet.wordle.helpers.WinMessages;
@@ -24,6 +24,9 @@ public final class Wordle {
   private static final int COLS = 5;
 
   Grid grid;
+
+  private String[] challenges = { "BEACH", "BLAZE", "CLIFF", "CLOUD", "FROST", "PETAL", "ONION", "SHARK", "STONE",
+      "RIVER" };
 
   private String targetWord; // The target word for this game
   private final List<Feedback> pastGuesses = new ArrayList<>(); // List of past guesses and their feedback
@@ -321,11 +324,11 @@ class Grid {
   private final int cols;
   private final Cell[][] cells;
   final Cursor cursor = new Cursor();
-
-  private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+  private final Texture backTexture;
 
   // Constructor for a new empty grid
   public Grid(int rows, int cols) {
+    backTexture = new Texture("images/button_square_flat.png");
     this.rows = rows;
     this.cols = cols;
     this.cells = new Cell[rows][cols];
@@ -474,21 +477,15 @@ class Grid {
     float startY = Gdx.graphics.getHeight() * 0.5f + gridHeight * 0.6f;
 
     // Render the grid tile
-    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         float x = startX + col * (cellSize + cellPadding);
         float y = startY - row * (cellSize + cellPadding);
         // Draw the cell tile
-        // TODO: Make this rounded rect
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x, y, cellSize, cellSize);
+        batch.setColor(Color.DARK_GRAY);
+        batch.draw(backTexture, x, y, cellSize, cellSize);
       }
     }
-    shapeRenderer.end();
-
-    // Render the letters
-    batch.begin();
 
     // Draw the letter in the box
     for (int row = 0; row < rows; row++) {
@@ -516,8 +513,6 @@ class Grid {
         }
       }
     }
-
-    batch.end();
   }
 
 }

@@ -1,5 +1,9 @@
 package ca.codepet.util;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 
 public final class Draw {
@@ -15,4 +19,5 @@ public final class Draw {
     shapeRenderer.circle(x + width - radius, y + height - radius, radius);
     shapeRenderer.circle(x + radius, y + height - radius, radius);
   }
+
 }
