@@ -16,6 +16,7 @@ public class InputHandler extends InputAdapter {
   private Rectangle playAgainButtonBounds;
   private Rectangle statsButtonBounds;
   private Rectangle helpButtonBounds;
+  private Rectangle imageRevealButtonBounds;
 
   public InputHandler(Wordle wordle, MainGame game) {
     this.wordle = wordle;
@@ -33,7 +34,6 @@ public class InputHandler extends InputAdapter {
 
     } else if (character == '\r' || character == '\n') {
       // Enter key pressed
-      System.out.println("Enter pressed");
       wordle.submitGuess();
 
     } else if (Character.isLetter(character)) {
@@ -46,7 +46,6 @@ public class InputHandler extends InputAdapter {
 
   public void setPlayAgainButtonBounds(Rectangle bounds) {
     if (playAgainButtonBounds == null) {
-      System.out.println("Play again button bounds set");
       playAgainButtonBounds = bounds;
     }
 
@@ -54,7 +53,6 @@ public class InputHandler extends InputAdapter {
 
   public void setStatsButtonBounds(Rectangle bounds) {
     if (statsButtonBounds == null) {
-      System.out.println("Stats button bounds set");
       statsButtonBounds = bounds;
     }
   }
@@ -62,7 +60,12 @@ public class InputHandler extends InputAdapter {
   public void setHelpButtonBounds(Rectangle bounds) {
     if (helpButtonBounds == null) {
       helpButtonBounds = bounds;
-      System.out.println("Help button bounds set");
+    }
+  }
+
+  public void setImageRevealButtonBounds(Rectangle bounds) {
+    if (imageRevealButtonBounds == null) {
+      imageRevealButtonBounds = bounds;
     }
   }
 
@@ -92,6 +95,16 @@ public class InputHandler extends InputAdapter {
       }
     }
 
+    // Show/hide image button
+    // if (imageRevealButtonBounds != null) {
+    // Vector2 touchPos = new Vector2(screenX, Gdx.graphics.getHeight() - screenY);
+    // if (imageRevealButtonBounds.contains(touchPos.x, touchPos.y)) {
+    // // Show the achievement screen
+    // game.setScreen(new ImageRevealScreen(game, game.getScreen()));
+    // return true;
+    // }
+    // }
+
     // Check if the game is over
     if (wordle.isGameOver()) {
       // Check if the play again button was pressed
@@ -104,7 +117,6 @@ public class InputHandler extends InputAdapter {
           return true;
         }
       }
-
     }
 
     return false;

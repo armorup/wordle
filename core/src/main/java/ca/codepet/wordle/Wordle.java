@@ -1,6 +1,7 @@
 package ca.codepet.wordle;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
@@ -12,7 +13,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.graphics.Texture;
 
 import ca.codepet.util.FileUtils;
 import ca.codepet.wordle.helpers.WinMessages;
@@ -24,6 +25,9 @@ public final class Wordle {
   private static final int COLS = 5;
 
   Grid grid;
+
+  private static final List<String> challenges = Arrays.asList(
+      "beach", "blaze", "cliff", "cloud", "frost", "petal", "onion", "shark", "stone", "river");
 
   private String targetWord; // The target word for this game
   private final List<Feedback> pastGuesses = new ArrayList<>(); // List of past guesses and their feedback
@@ -62,17 +66,55 @@ public final class Wordle {
     message = "";
     winMessage = "";
     statsRecorded = false;
-    grid = new Grid(ROWS, COLS);
-    this.targetWord = chooseRandomWord();
+    grid = new Grid(game, ROWS, COLS);
+    this.targetWord = nextWord();
     System.out.println("Target word: " + targetWord);
   }
 
   /**
+   * Choose the next word
+   */
+  public String nextWord() {
+    int gamesWon = game.userDataManager.getGamesWon();
+    String target;
+    if (gamesWon == 0) {
+      target = challenges.get(0);
+    } else if (gamesWon % 3 != 0 || gamesWon / 3 >= challenges.size()) {
+      target = chooseRandomWord();
+    } else {
+      target = challenges.get(gamesWon / 3);
+    }
+    return target.toUpperCase();
+  }
+
+  public String getChallengeTexturePath() {
+    int gamesWon = game.userDataManager.getGamesWon();
+    if (gamesWon == 0) {
+      return null;
+    }
+
+    int index = gamesWon % 3 == 0 ? gamesWon / 3 - 1 : gamesWon / 3;
+
+    String path;
+    if (index >= challenges.size()) {
+      path = "images/challenges/" + challenges.get(challenges.size() - 1) + ".png";
+    } else {
+      path = "images/challenges/" + challenges.get(index) + ".png";
+    }
+    return path;
+  }
+
+  /**
    * Choose a random word from the list of words.
+   * The random word cannot be one of the challenge words
    */
   private static String chooseRandomWord() {
     Random random = new Random();
-    return laWords.get(random.nextInt(laWords.size()));
+    String word = "beach";
+    while (challenges.contains(word)) {
+      word = laWords.get(random.nextInt(laWords.size()));
+    }
+    return word;
   }
 
   /**
@@ -321,11 +363,12 @@ class Grid {
   private final int cols;
   private final Cell[][] cells;
   final Cursor cursor = new Cursor();
-
-  private final ShapeRenderer shapeRenderer = new ShapeRenderer();
+  private final Texture backTexture;
 
   // Constructor for a new empty grid
-  public Grid(int rows, int cols) {
+  public Grid(MainGame game, int rows, int cols) {
+    // backTexture = new Texture("images/button_square_flat.png");
+    backTexture = game.assetManager.get("images/button_square_flat.png");
     this.rows = rows;
     this.cols = cols;
     this.cells = new Cell[rows][cols];
@@ -474,21 +517,15 @@ class Grid {
     float startY = Gdx.graphics.getHeight() * 0.5f + gridHeight * 0.6f;
 
     // Render the grid tile
-    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
     for (int row = 0; row < rows; row++) {
       for (int col = 0; col < cols; col++) {
         float x = startX + col * (cellSize + cellPadding);
         float y = startY - row * (cellSize + cellPadding);
         // Draw the cell tile
-        // TODO: Make this rounded rect
-        shapeRenderer.setColor(Color.DARK_GRAY);
-        shapeRenderer.rect(x, y, cellSize, cellSize);
+        batch.setColor(Color.GRAY);
+        batch.draw(backTexture, x, y, cellSize, cellSize);
       }
     }
-    shapeRenderer.end();
-
-    // Render the letters
-    batch.begin();
 
     // Draw the letter in the box
     for (int row = 0; row < rows; row++) {
@@ -516,8 +553,6 @@ class Grid {
         }
       }
     }
-
-    batch.end();
   }
 
 }

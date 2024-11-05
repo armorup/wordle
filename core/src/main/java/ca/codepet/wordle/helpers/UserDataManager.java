@@ -115,4 +115,5 @@ public final class UserDataManager {
     }
     return (double) getGamesWon() / gamesPlayed * 100;
   }
+
 }

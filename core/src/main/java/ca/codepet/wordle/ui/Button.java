@@ -1,13 +1,12 @@
 package ca.codepet.wordle.ui;
 
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Rectangle;
 
-import ca.codepet.util.Draw;
 import ca.codepet.wordle.MainGame;
 
 public class Button {
@@ -16,10 +15,12 @@ public class Button {
   private final float y;
   private final BitmapFont font;
   private final Color textColor;
-  private final Color backgroundColor;
   private final float padding;
   private Rectangle bounds;
   private final boolean isCircular;
+
+  private final Texture circularButtonTexture;
+  private final Texture rectangularButtonTexture;
 
   private final MainGame game;
 
@@ -33,10 +34,10 @@ public class Button {
     this.y = y;
     this.font = font;
     this.textColor = textColor;
-    this.backgroundColor = backgroundColor;
     this.padding = padding;
     this.isCircular = isCircular;
-
+    circularButtonTexture = new Texture("images/button_round_gradient.png");
+    rectangularButtonTexture = new Texture("images/button_rectangle_flat.png");
     calculateBounds();
   }
 
@@ -57,19 +58,15 @@ public class Button {
     }
   }
 
-  public void render(ShapeRenderer shapeRenderer, SpriteBatch batch) {
+  public void render(SpriteBatch batch) {
     // Draw the button background
-    shapeRenderer.begin(ShapeRenderer.ShapeType.Filled);
-    shapeRenderer.setColor(backgroundColor);
     if (isCircular) {
-      shapeRenderer.circle(x, y, bounds.width / 2);
+      batch.draw(circularButtonTexture, bounds.x, bounds.y, bounds.width, bounds.height);
     } else {
-      Draw.roundedRect(shapeRenderer, bounds.x, bounds.y, bounds.width, bounds.height, 10);
+      batch.draw(rectangularButtonTexture, bounds.x, bounds.y, bounds.width, bounds.height);
     }
-    shapeRenderer.end();
 
     // Draw the button text
-    batch.begin();
     font.setColor(textColor);
     GlyphLayout layout = new GlyphLayout(font, text);
     if (isCircular) {
@@ -77,7 +74,6 @@ public class Button {
     } else {
       font.draw(batch, layout, x - layout.width / 2, y + layout.height / 2 - padding);
     }
-    batch.end();
   }
 
   public Rectangle getBounds() {
