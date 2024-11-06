@@ -2,9 +2,9 @@ package ca.codepet.wordle;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.Texture;
 
 import ca.codepet.util.FontUtil;
 import ca.codepet.wordle.helpers.UserDataManager;
@@ -25,13 +25,13 @@ public class MainGame extends Game {
     public void create() {
         batch = new SpriteBatch();
         font = FontUtil.generateFont("fonts/Play-Regular.ttf", 36);
-        faRegularFont = FontUtil.generateFont("fonts/FA-Regular-400.otf", 30);
-        faSolidFont = FontUtil.generateFont("fonts/FA-Solid-900.otf", 36);
+        faRegularFont = FontUtil.generateFontAwesome("fonts/FA-Regular-400.otf", 30);
+        faSolidFont = FontUtil.generateFontAwesome("fonts/FA-Solid-900.otf", 36);
         assetManager = new AssetManager();
         userDataManager = new UserDataManager();
 
         // Reset user data
-        // userDataManager.reset();
+        userDataManager.reset();
 
         // Load sounds and images
         loadAudio();

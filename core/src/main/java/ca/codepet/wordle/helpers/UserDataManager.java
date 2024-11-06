@@ -116,4 +116,25 @@ public final class UserDataManager {
     return (double) getGamesWon() / gamesPlayed * 100;
   }
 
+  /**
+   * Gets the number of stars earned by the player.
+   *
+   * @return The number of stars earned.
+   */
+  public int getStarsEarned() {
+    if (getGamesWon() == 0) {
+      return 0;
+    }
+
+    return getGamesWon() / 3 + 1;
+  }
+
+  /**
+   * Gets the maximum number of stars that can be earned.
+   *
+   * @return The maximum number of stars that can be earned.
+   */
+  public int getMaxStars() {
+    return 10;
+  }
 }
