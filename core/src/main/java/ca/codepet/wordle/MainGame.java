@@ -57,7 +57,7 @@ public class MainGame extends Game {
         int starsEarned = userDataManager.getStarsEarned();
         int index = 0;
         if (starsEarned >= 1) {
-            index--;
+            index = starsEarned - 1;
         }
         String challengeWord = Wordle.challenges.get(index);
         loadImage("images/challenges/" + challengeWord + ".png");

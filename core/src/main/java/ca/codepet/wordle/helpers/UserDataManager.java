@@ -91,6 +91,7 @@ public final class UserDataManager {
    * @return The number of games won.
    */
   public int getGamesWon() {
+    // Sum all games in the array and subtract the number of games lost
     return Arrays.stream(userData.stats).sum() - userData.stats[0];
   }
 
