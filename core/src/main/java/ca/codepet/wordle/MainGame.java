@@ -31,7 +31,7 @@ public class MainGame extends Game {
         userDataManager = new UserDataManager();
 
         // Reset user data
-        userDataManager.reset();
+        // userDataManager.reset();
 
         // Load sounds and images
         loadAudio();
