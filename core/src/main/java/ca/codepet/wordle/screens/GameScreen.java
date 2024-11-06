@@ -34,6 +34,8 @@ public class GameScreen extends BaseScreen {
     this.wordle = new Wordle(game);
     this.inputHandler = new InputHandler(wordle, game);
 
+    // Load the remaining images
+    game.loadAllImages();
     // Set the background texture from wordle challenges
     updateChallengeImage();
 
@@ -59,6 +61,11 @@ public class GameScreen extends BaseScreen {
 
   @Override
   public void render(float delta) {
+    // Load remaining game assets
+    if (game.assetManager.update()) {
+      game.loadAllImages();
+    }
+
     Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT); // Clear the screen
 
     game.batch.begin();

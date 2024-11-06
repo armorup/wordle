@@ -26,7 +26,7 @@ public final class Wordle {
 
   Grid grid;
 
-  private static final List<String> challenges = Arrays.asList(
+  public static final List<String> challenges = Arrays.asList(
       "beach", "blaze", "cliff", "cloud", "frost", "petal", "onion", "shark", "stone", "river");
 
   private String targetWord; // The target word for this game

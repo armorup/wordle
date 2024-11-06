@@ -35,35 +35,52 @@ public class MainGame extends Game {
 
         // Load sounds and images
         loadAudio();
-        loadImages();
+        loadInitialAssets();
 
         // Load the splash screen
         setScreen(new SplashScreen(this, null));
     }
 
-    private void loadAudio() {
+    public void loadAudio() {
         assetManager.load("audio/click-a.ogg", com.badlogic.gdx.audio.Sound.class);
         assetManager.load("audio/click-b.ogg", com.badlogic.gdx.audio.Sound.class);
         assetManager.load("audio/music.mp3", com.badlogic.gdx.audio.Sound.class);
     }
 
-    private void loadImages() {
+    public void loadInitialAssets() {
         // Button images
-        assetManager.load("images/button_round_gradient.png", Texture.class);
-        assetManager.load("images/button_square_flat.png", Texture.class);
-        assetManager.load("images/button_rectangle_flat.png", Texture.class);
+        loadImage("images/button_round_gradient.png");
+        loadImage("images/button_square_flat.png");
+        loadImage("images/button_rectangle_flat.png");
 
-        // Challenge images
-        assetManager.load("images/challenges/beach.png", Texture.class);
-        assetManager.load("images/challenges/blaze.png", Texture.class);
-        assetManager.load("images/challenges/cliff.png", Texture.class);
-        assetManager.load("images/challenges/cloud.png", Texture.class);
-        assetManager.load("images/challenges/frost.png", Texture.class);
-        assetManager.load("images/challenges/onion.png", Texture.class);
-        assetManager.load("images/challenges/petal.png", Texture.class);
-        assetManager.load("images/challenges/river.png", Texture.class);
-        assetManager.load("images/challenges/shark.png", Texture.class);
-        assetManager.load("images/challenges/stone.png", Texture.class);
+        // Load the current challenge image
+        int starsEarned = userDataManager.getStarsEarned();
+        int index = 0;
+        if (starsEarned >= 1) {
+            index--;
+        }
+        String challengeWord = Wordle.challenges.get(index);
+        loadImage("images/challenges/" + challengeWord + ".png");
+    }
+
+    public void loadAllImages() {
+        // Load the remaining challenge images
+        loadImage("images/challenges/beach.png");
+        loadImage("images/challenges/blaze.png");
+        loadImage("images/challenges/cliff.png");
+        loadImage("images/challenges/cloud.png");
+        loadImage("images/challenges/frost.png");
+        loadImage("images/challenges/onion.png");
+        loadImage("images/challenges/petal.png");
+        loadImage("images/challenges/river.png");
+        loadImage("images/challenges/shark.png");
+        loadImage("images/challenges/stone.png");
+    }
+
+    private void loadImage(String path) {
+        if (!assetManager.isLoaded(path, Texture.class)) {
+            assetManager.load(path, Texture.class);
+        }
     }
 
     @Override

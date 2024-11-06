@@ -41,7 +41,7 @@ public class SplashScreen extends BaseScreen {
 
   private void renderProgressBar() {
     float progressBarWidth = Gdx.graphics.getWidth() * 0.6f;
-    float progressBarHeight = 30f;
+    float progressBarHeight = 25f;
     float progressBarX = (Gdx.graphics.getWidth() - progressBarWidth) / 2;
     float progressBarY = Gdx.graphics.getHeight() * 0.1f;
 
