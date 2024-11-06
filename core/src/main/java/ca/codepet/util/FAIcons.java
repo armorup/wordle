@@ -1,7 +1,7 @@
 package ca.codepet.util;
 
 public enum FAIcons {
-  CHART("\uF080"),
+  CHART("\uE473"),
   MAP("\uF279"),
   HELP("\uF059"),
   SETTINGS("\uF013"),

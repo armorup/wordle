@@ -60,9 +60,7 @@ public class Button {
 
   public void render(SpriteBatch batch) {
     // Draw the button background
-    if (isCircular) {
-      batch.draw(circularButtonTexture, bounds.x, bounds.y, bounds.width, bounds.height);
-    } else {
+    if (!isCircular) {
       batch.draw(rectangularButtonTexture, bounds.x, bounds.y, bounds.width, bounds.height);
     }
 
